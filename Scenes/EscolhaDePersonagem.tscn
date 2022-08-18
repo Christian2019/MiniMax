@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/fundoEscolhaPersonagem.png" type="Texture" id=1]
+
+[node name="EscolhaDePersonagem" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 510.5, 301.25 )
+scale = Vector2( 1.13152, 1.16987 )
+texture = ExtResource( 1 )

@@ -1,0 +1,11 @@
+botar som baby yoda
+botar som darth vader
+
+criar minimax alg
+botoes easy medio dificil
+
+easy = random
+medio = 50% minimax 50% random
+dificil = 100% minimax
+
+remover o que nao sera usado
