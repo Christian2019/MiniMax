@@ -1,12 +1,15 @@
 extends Node2D
 
 var dificuldade = "hard"
+var changeColor = true
 var turno = 1
+var ButtonDificuldade= false
 
 func cleanMatriz():
 	return [[" "," "," "],
 			[" "," "," "],
 			[" "," "," "]]
+			
 var matriz = cleanMatriz()
 
 func changeImages():
@@ -30,11 +33,46 @@ func changeImages():
 func _ready() -> void:
 	start()
 	
+func _process(delta: float) -> void:
+	if (turno>2 and ButtonDificuldade):
+		ButtonVisibility()
+	if (changeColor):
+		changeColor = false
+		changeColorButton()
+
+func changeColorButton():
+		if (dificuldade== "easy"):
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#2A7F62"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+		elif (dificuldade== "medium"):
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("96a10b"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+		elif (dificuldade== "hard"):
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("930000"))
+		
+func ButtonVisibility():
+	get_parent().get_node("Button_easy").visible=!ButtonDificuldade
+	get_parent().get_node("Button_medium").visible=!ButtonDificuldade
+	get_parent().get_node("Button_hard").visible=!ButtonDificuldade
+	ButtonDificuldade=!ButtonDificuldade
+	
 #Jogada da maquina	
 func _on_Maquina_timeout() -> void:
 	var p
 	if (dificuldade=="easy"||turno==1):
 		p =random()
+	elif (dificuldade=="medium"):
+		var n = intRandom(0,10)+1
+		if (n>3):
+			print("Jogou miniMax no medio")
+			p =miniMax()
+		else:
+			print("Jogou Random no medio")
+			p =random()
 	elif (dificuldade=="hard"):
 		p =miniMax()
 	matriz[p.x][p.y]="x"
@@ -49,6 +87,7 @@ func _on_Maquina_timeout() -> void:
 func miniMax():
 	var vitorias = []
 	var empates = []
+	var derrotas = []
 	for i in range(matriz.size()):
 		for j in range(matriz[i].size()):
 			if (matriz[i][j]==" "):
@@ -65,12 +104,17 @@ func miniMax():
 						vitorias.append({"x":i,"y":j})
 					elif (v==0):
 						empates.append({"x":i,"y":j})
+					elif (v==-1):
+						derrotas.append({"x":i,"y":j})
 	if (vitorias.size()>0):
 		var n = intRandom(0,vitorias.size())
 		return vitorias[n]
-	else:
+	elif (empates.size()>0):
 		var n = intRandom(0,empates.size())
 		return empates[n]
+	else:
+		var n = intRandom(0,derrotas.size())
+		return derrotas[n]
 
 func miniMaxR(m,Max):
 	var melhorJogadaValue
@@ -111,8 +155,6 @@ func random():
 
 func _on_FimDeJogo_timeout() -> void:
 	start()
-		
-
 
 func intRandom(minV,maxV):
 	var rng = RandomNumberGenerator.new()
@@ -121,6 +163,7 @@ func intRandom(minV,maxV):
 
 func start():
 	print("Inicio da partida: ")
+	ButtonVisibility()
 	turno = 1
 	matriz = cleanMatriz()
 	changeImages()
@@ -130,7 +173,6 @@ func start():
 	else:
 		$Estado.text="Vez da Maquina"
 		$Maquina.start()
-
 
 func isGameFinish(matriz,miniMax):
 	#Linhas
@@ -237,7 +279,6 @@ func isGameFinish(matriz,miniMax):
 			print("empate")
 			$Estado.text="Empate"
 			return true
-	
 	#Jogo continua
 	if(miniMax):
 		return "continua"
@@ -267,11 +308,10 @@ func isFree(x,y):
 			$Maquina.start()
 	else:
 		print("Jogada nao permitida")
-	
-		
+
 func _on_Button0x0_pressed() -> void:
-	
 	#print("Button 0x0 pressed!")
+	
 	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,0)		
 
@@ -295,7 +335,6 @@ func _on_Button1x1_pressed() -> void:
 	if ($Estado.text=="Vez do Jogador"):
 		isFree(1,1)	
 
-
 func _on_Button1x2_pressed() -> void:
 	#print("Button 1x2 pressed!")
 	if ($Estado.text=="Vez do Jogador"):
@@ -316,3 +355,17 @@ func _on_Button2x2_pressed() -> void:
 	if ($Estado.text=="Vez do Jogador"):
 		isFree(2,2)	
 
+func _on_Button_easy_pressed() -> void:
+	dificuldade="easy"
+	changeColor=true
+	print(dificuldade)
+
+func _on_Button_medium_pressed() -> void:
+	dificuldade= "medium"
+	changeColor=true
+	print(dificuldade)
+
+func _on_Button_hard_pressed() -> void:
+	dificuldade= "hard"
+	changeColor=true
+	print(dificuldade)

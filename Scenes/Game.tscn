@@ -101,7 +101,7 @@ margin_bottom = 231.0
 size_flags_stretch_ratio = 0.82
 custom_colors/font_color = Color( 0.843137, 0.584314, 0.0313726, 1 )
 custom_fonts/font = SubResource( 11 )
-text = "Escolha um Personagem"
+text = "Game"
 align = 1
 valign = 1
 

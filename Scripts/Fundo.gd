@@ -7,5 +7,4 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	if (!$FundoVideo.is_playing()):
-		print("entrou")
 		$FundoVideo.play()
