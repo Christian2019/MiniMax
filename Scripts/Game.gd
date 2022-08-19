@@ -1,6 +1,7 @@
 extends Node2D
 
-
+var dificuldade = "hard"
+var turno = 1
 
 func cleanMatriz():
 	return [[" "," "," "],
@@ -32,32 +33,154 @@ func changeImages():
 func _ready() -> void:
 	start()
 	
-	
 #Jogada da maquina	
 func _on_Maquina_timeout() -> void:
-	var x = int(rand_range(0,3))
-	var y = int(rand_range(0,3))
-	while (matriz[x][y]!=" "):
-		x = int(rand_range(0,3))
-		y = int(rand_range(0,3))
-	matriz[x][y]="x"
-	print("Maquina joga em: ",x,"x",y)
+	var p
+	if (dificuldade=="easy"||turno==1):
+		p =random()
+	elif (dificuldade=="hard"):
+		p =miniMax()
+	matriz[p.x][p.y]="x"
+	turno+=1
+	print("Maquina joga em: ",p.x,"x",p.y)
 	changeImages()
 	if (isGameFinish(matriz)):
 		$FimDeJogo.start()
 	else:
 		$Estado.text="Vez do Jogador"
+		
+func miniMax():
+	var melhorJogadaValue = -1
+	var melhorJogada		
+	for i in range(matriz.size()):
+		for j in range(matriz[i].size()):
+			if (matriz[i][j]==" "):
+				var nm = matriz.duplicate(true)
+				nm[i][j]="x"
+				var result = endMiniMax(nm)
+				if (String(result) == "1"):
+					return {"x":i,"y":j}
+				elif (String(result) == "0"):
+					return {"x":i,"y":j}
+				elif (result == "continua"):
+					var v =miniMaxR(nm,false)
+					if (v>melhorJogadaValue):
+						melhorJogadaValue=v
+						melhorJogada= {"x":i,"y":j}
+	return melhorJogada			
+
+func miniMaxR(m,Max):
+	var melhorJogadaValue
+	if (Max):
+		melhorJogadaValue=-1
+	else:
+		melhorJogadaValue=1
+	for i in range(m.size()):
+		for j in range(m[i].size()):
+			if (m[i][j]==" "):
+				var nm = m.duplicate(true)
+				if (Max):
+					nm[i][j]="x"
+				else:
+					nm[i][j]="o"
+				var result = endMiniMax(nm)
+				if (String(result)=="continua"):
+						result = miniMaxR(nm,!Max)
+				if(Max):
+					if (result==1):
+						return result
+					elif (result>melhorJogadaValue):
+							melhorJogadaValue= result
+				else:
+					if (result==-1):
+						return result
+					elif (result<melhorJogadaValue):
+							melhorJogadaValue= result
+	return melhorJogadaValue
+
+			
+func endMiniMax(matriz):
+	#+1 -1
+	#Linhas
+	if (matriz[0][0]==matriz[0][1] and matriz[0][1]==matriz[0][2] and matriz[0][0]!=" "):
+		if (matriz[0][0]=="x"):
+			return 1
+		elif(matriz[0][0]=="o"):
+			return -1
+	elif (matriz[1][0]==matriz[1][1] and matriz[1][1]==matriz[1][2] and matriz[1][0]!=" "):
+		if (matriz[1][0]=="x"):
+			return 1
+		elif(matriz[1][0]=="o"):
+			return -1
+	elif (matriz[2][0]==matriz[2][1] and matriz[2][1]==matriz[2][2]and matriz[2][0]!=" "):
+		if (matriz[2][0]=="x"):
+			return 1
+		elif(matriz[2][0]=="o"):
+			return -1
+	#Colunas
+	elif (matriz[0][0]==matriz[1][0] and matriz[1][0]==matriz[2][0] and matriz[0][0]!=" "):
+		if (matriz[0][0]=="x"):
+			return 1
+		elif(matriz[0][0]=="o"):
+			return -1
+	elif (matriz[0][1]==matriz[1][1] and matriz[1][1]==matriz[2][1] and matriz[0][1]!=" "):
+		if (matriz[0][1]=="x"):
+			return 1
+		elif(matriz[0][1]=="o"):
+			return -1
+	elif (matriz[0][2]==matriz[1][2] and matriz[1][2]==matriz[2][2] and matriz[0][2]!=" "):
+		if (matriz[0][2]=="x"):
+			return 1
+		elif(matriz[0][2]=="o"):
+			return -1	
+	#Diagonais
+	elif (matriz[0][0]==matriz[1][1] and matriz[1][1]==matriz[2][2] and matriz[0][0]!=" "):
+		if (matriz[0][0]=="x"):
+			return 1
+		elif(matriz[0][0]=="o"):
+			return -1
+	elif (matriz[2][0]==matriz[1][1] and matriz[1][1]==matriz[0][2] and matriz[2][0]!=" "):
+		if (matriz[2][0]=="x"):
+			return 1
+		elif(matriz[2][0]=="o"):
+			return -1	
+	#Empate
+	var empate = true
+	for i in range(matriz.size()):
+		for j in range(matriz[i].size()):
+			if (matriz[i][j]==" "):
+				empate=false
+	if (empate):
+		return 0
+	#Jogo continua
+	return "continua"
+	
+
+func random():
+	var x = int(rand_range(0,3))
+	var y = int(rand_range(0,3))
+	while (matriz[x][y]!=" "):
+		x = int(rand_range(0,3))
+		y = int(rand_range(0,3))
+	
+	return {"x":x,"y":y}
 
 func _on_FimDeJogo_timeout() -> void:
 	start()
 		
 
+
+func intRandom(minV,maxV):
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	return int (rng.randf_range(minV, maxV))
+
 func start():
 	print("Inicio da partida: ")
+	turno = 1
 	matriz = cleanMatriz()
 	changeImages()
-
-	var i = int(rand_range(0,2))
+	var i = intRandom(0,2)
 	if (i==0):
 		$Estado.text="Vez do Jogador"
 	else:
@@ -126,7 +249,7 @@ func isGameFinish(matriz):
 	
 	#Jogo continua
 	return false
-	
+
 func printarMatriz(matriz):
 	for i in range(matriz.size()):
 		var line=""
@@ -140,6 +263,7 @@ func printarMatriz(matriz):
 func isFree(x,y):
 	if (matriz[x][y]==" "):
 		matriz[x][y]="o"
+		turno+=1
 		print("Jogador joga em: ",x,"x",y)
 		changeImages()
 		if (isGameFinish(matriz)):
@@ -152,6 +276,7 @@ func isFree(x,y):
 	
 		
 func _on_Button0x0_pressed() -> void:
+	
 	#print("Button 0x0 pressed!")
 	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,0)		
