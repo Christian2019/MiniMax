@@ -27,9 +27,6 @@ func changeImages():
 			elif (matriz[i][j]==" "):
 				get_node(path).animation="Vazio"
 
-
-		
-
 func _ready() -> void:
 	start()
 	
@@ -44,7 +41,7 @@ func _on_Maquina_timeout() -> void:
 	turno+=1
 	print("Maquina joga em: ",p.x,"x",p.y)
 	changeImages()
-	if (isGameFinish(matriz)):
+	if (isGameFinish(matriz,false)):
 		$FimDeJogo.start()
 	else:
 		$Estado.text="Vez do Jogador"
@@ -52,14 +49,12 @@ func _on_Maquina_timeout() -> void:
 func miniMax():
 	var vitorias = []
 	var empates = []
-	#var melhorJogadaValue = -1
-#	var melhorJogada		
 	for i in range(matriz.size()):
 		for j in range(matriz[i].size()):
 			if (matriz[i][j]==" "):
 				var nm = matriz.duplicate(true)
 				nm[i][j]="x"
-				var result = endMiniMax(nm)
+				var result = isGameFinish(nm,true)
 				if (String(result) == "1"):
 					return {"x":i,"y":j}
 				elif (String(result) == "0"):
@@ -70,16 +65,12 @@ func miniMax():
 						vitorias.append({"x":i,"y":j})
 					elif (v==0):
 						empates.append({"x":i,"y":j})
-					#if (v>melhorJogadaValue):
-					#	melhorJogadaValue=v
-					#	melhorJogada= {"x":i,"y":j}
 	if (vitorias.size()>0):
 		var n = intRandom(0,vitorias.size())
 		return vitorias[n]
 	else:
 		var n = intRandom(0,empates.size())
 		return empates[n]
-	#return melhorJogada			
 
 func miniMaxR(m,Max):
 	var melhorJogadaValue
@@ -95,7 +86,7 @@ func miniMaxR(m,Max):
 					nm[i][j]="x"
 				else:
 					nm[i][j]="o"
-				var result = endMiniMax(nm)
+				var result = isGameFinish(nm,true)
 				if (String(result)=="continua"):
 						result = miniMaxR(nm,!Max)
 				if(Max):
@@ -110,71 +101,12 @@ func miniMaxR(m,Max):
 							melhorJogadaValue= result
 	return melhorJogadaValue
 
-			
-func endMiniMax(matriz):
-	#+1 -1
-	#Linhas
-	if (matriz[0][0]==matriz[0][1] and matriz[0][1]==matriz[0][2] and matriz[0][0]!=" "):
-		if (matriz[0][0]=="x"):
-			return 1
-		elif(matriz[0][0]=="o"):
-			return -1
-	elif (matriz[1][0]==matriz[1][1] and matriz[1][1]==matriz[1][2] and matriz[1][0]!=" "):
-		if (matriz[1][0]=="x"):
-			return 1
-		elif(matriz[1][0]=="o"):
-			return -1
-	elif (matriz[2][0]==matriz[2][1] and matriz[2][1]==matriz[2][2]and matriz[2][0]!=" "):
-		if (matriz[2][0]=="x"):
-			return 1
-		elif(matriz[2][0]=="o"):
-			return -1
-	#Colunas
-	elif (matriz[0][0]==matriz[1][0] and matriz[1][0]==matriz[2][0] and matriz[0][0]!=" "):
-		if (matriz[0][0]=="x"):
-			return 1
-		elif(matriz[0][0]=="o"):
-			return -1
-	elif (matriz[0][1]==matriz[1][1] and matriz[1][1]==matriz[2][1] and matriz[0][1]!=" "):
-		if (matriz[0][1]=="x"):
-			return 1
-		elif(matriz[0][1]=="o"):
-			return -1
-	elif (matriz[0][2]==matriz[1][2] and matriz[1][2]==matriz[2][2] and matriz[0][2]!=" "):
-		if (matriz[0][2]=="x"):
-			return 1
-		elif(matriz[0][2]=="o"):
-			return -1	
-	#Diagonais
-	elif (matriz[0][0]==matriz[1][1] and matriz[1][1]==matriz[2][2] and matriz[0][0]!=" "):
-		if (matriz[0][0]=="x"):
-			return 1
-		elif(matriz[0][0]=="o"):
-			return -1
-	elif (matriz[2][0]==matriz[1][1] and matriz[1][1]==matriz[0][2] and matriz[2][0]!=" "):
-		if (matriz[2][0]=="x"):
-			return 1
-		elif(matriz[2][0]=="o"):
-			return -1	
-	#Empate
-	var empate = true
-	for i in range(matriz.size()):
-		for j in range(matriz[i].size()):
-			if (matriz[i][j]==" "):
-				empate=false
-	if (empate):
-		return 0
-	#Jogo continua
-	return "continua"
-	
-
 func random():
-	var x = int(rand_range(0,3))
-	var y = int(rand_range(0,3))
+	var x = intRandom(0,3)
+	var y = intRandom(0,3)
 	while (matriz[x][y]!=" "):
-		x = int(rand_range(0,3))
-		y = int(rand_range(0,3))
-	
+		x = intRandom(0,3)
+		y = intRandom(0,3)
 	return {"x":x,"y":y}
 
 func _on_FimDeJogo_timeout() -> void:
@@ -200,54 +132,98 @@ func start():
 		$Maquina.start()
 
 
-func isGameFinish(matriz):
+func isGameFinish(matriz,miniMax):
 	#Linhas
 	if (matriz[0][0]==matriz[0][1] and matriz[0][1]==matriz[0][2] and matriz[0][0]!=" "):
-		print ("Vitoria: ",matriz[0][0])
-	
-		$Estado.text="Vitoria do " + matriz[0][0]
-		print("Vitoria de linha 1")
-		return true
+		if(miniMax):
+			if (matriz[0][0]=="x"):
+				return 1
+			elif(matriz[0][0]=="o"):
+				return -1
+		else:	
+			print ("Vitoria: ",matriz[0][0])
+			$Estado.text="Vitoria do " + matriz[0][0]
+			print("Vitoria de linha 1")
+			return true
 	elif (matriz[1][0]==matriz[1][1] and matriz[1][1]==matriz[1][2] and matriz[1][0]!=" "):
-		print ("Vitoria: ",matriz[1][0])
-		
-		$Estado.text="Vitoria do " + matriz[1][0]
-		print("Vitoria de linha 2")
-		return true
+		if(miniMax):
+			if (matriz[1][0]=="x"):
+				return 1
+			elif(matriz[1][0]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[1][0])
+			$Estado.text="Vitoria do " + matriz[1][0]
+			print("Vitoria de linha 2")
+			return true
 	elif (matriz[2][0]==matriz[2][1] and matriz[2][1]==matriz[2][2]and matriz[2][0]!=" "):
-		print ("Vitoria: ",matriz[2][0])
-		
-		$Estado.text="Vitoria do " + matriz[2][0]
-		print("Vitoria de linha 3")
-		return true
+		if(miniMax):
+			if (matriz[2][0]=="x"):
+				return 1
+			elif(matriz[2][0]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[2][0])
+			$Estado.text="Vitoria do " + matriz[2][0]
+			print("Vitoria de linha 3")
+			return true
 	#Colunas
 	elif (matriz[0][0]==matriz[1][0] and matriz[1][0]==matriz[2][0] and matriz[0][0]!=" "):
-		print ("Vitoria: ",matriz[0][0])
-		
-		$Estado.text="Vitoria do " + matriz[0][0]
-		print("Vitoria de coluna 1")
-		return true
+		if(miniMax):
+			if (matriz[0][0]=="x"):
+				return 1
+			elif(matriz[0][0]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[0][0])
+			$Estado.text="Vitoria do " + matriz[0][0]
+			print("Vitoria de coluna 1")
+			return true
 	elif (matriz[0][1]==matriz[1][1] and matriz[1][1]==matriz[2][1] and matriz[0][1]!=" "):
-		print ("Vitoria: ",matriz[0][1])
-		$Estado.text="Vitoria do " + matriz[0][1]
-		print("Vitoria de coluna 2")
-		return true
+		if(miniMax):
+			if (matriz[0][1]=="x"):
+				return 1
+			elif(matriz[0][1]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[0][1])
+			$Estado.text="Vitoria do " + matriz[0][1]
+			print("Vitoria de coluna 2")
+			return true
 	elif (matriz[0][2]==matriz[1][2] and matriz[1][2]==matriz[2][2] and matriz[0][2]!=" "):
-		print ("Vitoria: ",matriz[0][2])
-		$Estado.text="Vitoria do " + matriz[0][2]
-		print("Vitoria de coluna 3")
-		return true		
+		if(miniMax):
+			if (matriz[0][2]=="x"):
+				return 1
+			elif(matriz[0][2]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[0][2])
+			$Estado.text="Vitoria do " + matriz[0][2]
+			print("Vitoria de coluna 3")
+			return true		
 	#Diagonais
 	elif (matriz[0][0]==matriz[1][1] and matriz[1][1]==matriz[2][2] and matriz[0][0]!=" "):
-		print ("Vitoria: ",matriz[0][0])
-		$Estado.text="Vitoria do " + matriz[0][0]
-		print("Vitoria de diagonal 1")
-		return true
+		if(miniMax):
+			if (matriz[0][0]=="x"):
+				return 1
+			elif(matriz[0][0]=="o"):
+				return -1
+		else:
+			print ("Vitoria: ",matriz[0][0])
+			$Estado.text="Vitoria do " + matriz[0][0]
+			print("Vitoria de diagonal 1")
+			return true
 	elif (matriz[2][0]==matriz[1][1] and matriz[1][1]==matriz[0][2] and matriz[2][0]!=" "):
-		print ("Vitoria: ",matriz[2][0])
-		$Estado.text="Vitoria do " + matriz[2][0]
-		print("Vitoria de diagonal 2")
-		return true		
+		if(miniMax):
+			if (matriz[2][0]=="x"):
+				return 1
+			elif(matriz[2][0]=="o"):
+				return -1	
+		else:
+			print ("Vitoria: ",matriz[2][0])
+			$Estado.text="Vitoria do " + matriz[2][0]
+			print("Vitoria de diagonal 2")
+			return true		
 	#Empate
 	var empate = true
 	for i in range(matriz.size()):
@@ -255,12 +231,18 @@ func isGameFinish(matriz):
 			if (matriz[i][j]==" "):
 				empate=false
 	if (empate):
-		print("empate")
-		$Estado.text="Empate"
-		return true
+		if(miniMax):
+			return 0
+		else:
+			print("empate")
+			$Estado.text="Empate"
+			return true
 	
 	#Jogo continua
-	return false
+	if(miniMax):
+		return "continua"
+	else:
+		return false
 
 func printarMatriz(matriz):
 	for i in range(matriz.size()):
@@ -278,7 +260,7 @@ func isFree(x,y):
 		turno+=1
 		print("Jogador joga em: ",x,"x",y)
 		changeImages()
-		if (isGameFinish(matriz)):
+		if (isGameFinish(matriz,false)):
 			$FimDeJogo.start()
 		else:
 			$Estado.text="Vez da Maquina"
