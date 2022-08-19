@@ -50,8 +50,10 @@ func _on_Maquina_timeout() -> void:
 		$Estado.text="Vez do Jogador"
 		
 func miniMax():
-	var melhorJogadaValue = -1
-	var melhorJogada		
+	var vitorias = []
+	var empates = []
+	#var melhorJogadaValue = -1
+#	var melhorJogada		
 	for i in range(matriz.size()):
 		for j in range(matriz[i].size()):
 			if (matriz[i][j]==" "):
@@ -64,10 +66,20 @@ func miniMax():
 					return {"x":i,"y":j}
 				elif (result == "continua"):
 					var v =miniMaxR(nm,false)
-					if (v>melhorJogadaValue):
-						melhorJogadaValue=v
-						melhorJogada= {"x":i,"y":j}
-	return melhorJogada			
+					if (v==1):
+						vitorias.append({"x":i,"y":j})
+					elif (v==0):
+						empates.append({"x":i,"y":j})
+					#if (v>melhorJogadaValue):
+					#	melhorJogadaValue=v
+					#	melhorJogada= {"x":i,"y":j}
+	if (vitorias.size()>0):
+		var n = intRandom(0,vitorias.size())
+		return vitorias[n]
+	else:
+		var n = intRandom(0,empates.size())
+		return empates[n]
+	#return melhorJogada			
 
 func miniMaxR(m,Max):
 	var melhorJogadaValue
