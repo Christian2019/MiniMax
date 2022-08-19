@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tabuleiro.png" type="Texture" id=2]
 [ext_resource path="res://Assets/bola.jpg" type="Texture" id=3]
 [ext_resource path="res://Assets/x.jpg" type="Texture" id=4]
+[ext_resource path="res://Assets/Darth Vader Breathing.mp3" type="AudioStream" id=5]
+[ext_resource path="res://Scripts/VaderBreathing.gd" type="Script" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -109,7 +111,17 @@ valign = 1
 one_shot = true
 
 [node name="FimDeJogo" type="Timer" parent="."]
+wait_time = 3.0
 one_shot = true
+
+[node name="VaderBreathing" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+volume_db = 4.452
+script = ExtResource( 6 )
+
+[node name="Stop" type="Timer" parent="VaderBreathing"]
+wait_time = 4.0
 
 [connection signal="timeout" from="Maquina" to="." method="_on_Maquina_timeout"]
 [connection signal="timeout" from="FimDeJogo" to="." method="_on_FimDeJogo_timeout"]
+[connection signal="timeout" from="VaderBreathing/Stop" to="VaderBreathing" method="_on_Stop_timeout"]

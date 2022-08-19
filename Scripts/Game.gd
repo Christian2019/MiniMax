@@ -161,8 +161,34 @@ func intRandom(minV,maxV):
 	rng.randomize()
 	return int (rng.randf_range(minV, maxV))
 
+func resetSabers():
+	#
+	get_parent().get_node("RedSaber").free()
+	get_parent().get_node("BlueSaber").free()
+	var scene = load("res://Objects/RedSaber.tscn")
+	scene.resource_name="RedSaber"
+	var instance = scene.instance()
+	instance.set_name("RedSaber")
+	get_parent().add_child(instance)
+	var scene2 = load("res://Objects/BlueSaber.tscn")
+	scene2.resource_name="BlueSaber"
+	var instance2 = scene2.instance()
+	instance2.set_name("BlueSaber")
+	get_parent().add_child(instance2)
+	
+	print(get_parent().get_node("RedSaber").get_path())
+	#get_parent().get_node("RedSaber").volume_db=-80
+	#get_parent().get_node("BlueSaber").volume_db=-80
+	#get_parent().get_node("RedSaber").play()
+	#get_parent().get_node("BlueSaber").play()
+	#get_parent().get_node("AnimationSaberToStartPosition").start()
+
 func start():
 	print("Inicio da partida: ")
+	#resetSabers()
+	get_parent().get_node("RedSaber").visible=false
+	get_parent().get_node("BlueSaber").visible=false
+	$VaderBreathing.stop()
 	ButtonVisibility()
 	turno = 1
 	matriz = cleanMatriz()
@@ -171,8 +197,14 @@ func start():
 	if (i==0):
 		$Estado.text="Vez do Jogador"
 	else:
-		$Estado.text="Vez da Maquina"
-		$Maquina.start()
+		maquinaStart()
+		
+func maquinaStart():
+	$Estado.text="Vez da Maquina"
+	if(!$VaderBreathing.playing):
+		$VaderBreathing.play()
+		$VaderBreathing/Stop.start()
+	$Maquina.start()
 
 func isGameFinish(matriz,miniMax):
 	#Linhas
@@ -186,6 +218,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[0][0])
 			$Estado.text="Vitoria do " + matriz[0][0]
 			print("Vitoria de linha 1")
+			winAnimation(matriz[0][0],"l1")
 			return true
 	elif (matriz[1][0]==matriz[1][1] and matriz[1][1]==matriz[1][2] and matriz[1][0]!=" "):
 		if(miniMax):
@@ -197,6 +230,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[1][0])
 			$Estado.text="Vitoria do " + matriz[1][0]
 			print("Vitoria de linha 2")
+			winAnimation(matriz[1][0],"l2")
 			return true
 	elif (matriz[2][0]==matriz[2][1] and matriz[2][1]==matriz[2][2]and matriz[2][0]!=" "):
 		if(miniMax):
@@ -208,6 +242,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[2][0])
 			$Estado.text="Vitoria do " + matriz[2][0]
 			print("Vitoria de linha 3")
+			winAnimation(matriz[2][0],"l3")
 			return true
 	#Colunas
 	elif (matriz[0][0]==matriz[1][0] and matriz[1][0]==matriz[2][0] and matriz[0][0]!=" "):
@@ -220,6 +255,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[0][0])
 			$Estado.text="Vitoria do " + matriz[0][0]
 			print("Vitoria de coluna 1")
+			winAnimation(matriz[0][0],"c1")
 			return true
 	elif (matriz[0][1]==matriz[1][1] and matriz[1][1]==matriz[2][1] and matriz[0][1]!=" "):
 		if(miniMax):
@@ -231,6 +267,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[0][1])
 			$Estado.text="Vitoria do " + matriz[0][1]
 			print("Vitoria de coluna 2")
+			winAnimation(matriz[0][1],"c2")
 			return true
 	elif (matriz[0][2]==matriz[1][2] and matriz[1][2]==matriz[2][2] and matriz[0][2]!=" "):
 		if(miniMax):
@@ -242,6 +279,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[0][2])
 			$Estado.text="Vitoria do " + matriz[0][2]
 			print("Vitoria de coluna 3")
+			winAnimation(matriz[0][2],"c3")
 			return true		
 	#Diagonais
 	elif (matriz[0][0]==matriz[1][1] and matriz[1][1]==matriz[2][2] and matriz[0][0]!=" "):
@@ -254,6 +292,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[0][0])
 			$Estado.text="Vitoria do " + matriz[0][0]
 			print("Vitoria de diagonal 1")
+			winAnimation(matriz[0][0],"d1")
 			return true
 	elif (matriz[2][0]==matriz[1][1] and matriz[1][1]==matriz[0][2] and matriz[2][0]!=" "):
 		if(miniMax):
@@ -265,6 +304,7 @@ func isGameFinish(matriz,miniMax):
 			print ("Vitoria: ",matriz[2][0])
 			$Estado.text="Vitoria do " + matriz[2][0]
 			print("Vitoria de diagonal 2")
+			winAnimation(matriz[2][0],"d2")
 			return true		
 	#Empate
 	var empate = true
@@ -304,14 +344,53 @@ func isFree(x,y):
 		if (isGameFinish(matriz,false)):
 			$FimDeJogo.start()
 		else:
-			$Estado.text="Vez da Maquina"
-			$Maquina.start()
+			maquinaStart()
 	else:
 		print("Jogada nao permitida")
 
+func winAnimation(vencedor,tipo):
+	var typeSaber
+	if (vencedor=="x"):
+		typeSaber="RedSaber"
+	else:
+		typeSaber="BlueSaber"
+	#Coluna 1 
+	if(tipo=="c1"):
+		wAPlayer(380,211,240,550,0,typeSaber)
+	#Coluna 2
+	elif(tipo=="c2"):
+		wAPlayer(620,211,240,550,0,typeSaber)
+	#Coluna 3
+	elif(tipo=="c3"):
+		wAPlayer(855,211,240,550,0,typeSaber)
+	#Linha 1
+	elif(tipo=="l1"):
+	 wAPlayer(1130,211,240,750,90,typeSaber)
+	#Linha 2
+	elif(tipo=="l2"):
+	 wAPlayer(1130,350,240,750,90,typeSaber)
+	#Linha 3
+	elif(tipo=="l3"):
+	 wAPlayer(1130,520,240,750,90,typeSaber)
+	#Diagonal 1
+	elif(tipo=="d1"):
+	 wAPlayer(1200,600,240,900,120,typeSaber)
+	#Diagonal 2
+	elif(tipo=="d2"):
+	 wAPlayer(520,900,240,900,225,typeSaber)
+	
+func wAPlayer(x,y,sizeX,sizeY,Rotation,typeSaber):
+	get_parent().get_node(typeSaber).rect_position.x = x
+	get_parent().get_node(typeSaber).rect_position.y = y
+	get_parent().get_node(typeSaber).rect_size.x=sizeX
+	get_parent().get_node(typeSaber).rect_size.y=sizeY
+	get_parent().get_node(typeSaber).rect_rotation=Rotation
+	get_parent().get_node(typeSaber).visible=true
+	get_parent().get_node(typeSaber).play()
+
 func _on_Button0x0_pressed() -> void:
 	#print("Button 0x0 pressed!")
-	
+
 	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,0)		
 
@@ -369,3 +448,13 @@ func _on_Button_hard_pressed() -> void:
 	dificuldade= "hard"
 	changeColor=true
 	print(dificuldade)
+
+
+func _on_Teste_pressed() -> void:
+	wAPlayer(380,211,240,550,0,"RedSaber")
+
+func _on_AnimationSaberToStartPosition_timeout() -> void:
+		get_parent().get_node("RedSaber").stop()
+		get_parent().get_node("BlueSaber").stop()
+		get_parent().get_node("RedSaber").volume_db=0
+		get_parent().get_node("BlueSaber").volume_db=0

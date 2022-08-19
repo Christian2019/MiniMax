@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Game.tscn" type="PackedScene" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://Assets/Xolonium-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Assets/intro.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Scripts/Fundo.gd" type="Script" id=7]
+[ext_resource path="res://Assets/RedSaber.webm" type="VideoStream" id=8]
+[ext_resource path="res://Assets/BlueSaber.webm" type="VideoStream" id=9]
+[ext_resource path="res://Objects/BlueSaber.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Objects/RedSaber.tscn" type="PackedScene" id=11]
 
 [sub_resource type="StyleBoxLine" id=13]
 color = Color( 0, 0, 0, 0 )
@@ -218,6 +222,23 @@ custom_styles/hover = SubResource( 24 )
 custom_styles/normal = SubResource( 19 )
 text = "Difícil"
 
+[node name="Teste" type="Button" parent="."]
+margin_left = 48.0
+margin_top = 783.0
+margin_right = 185.0
+margin_bottom = 858.0
+text = "TESTE"
+
+[node name="AnimationSaberToStartPosition" type="Timer" parent="."]
+wait_time = 0.23
+one_shot = true
+
+[node name="BlueSaber" parent="." instance=ExtResource( 10 )]
+stream = ExtResource( 9 )
+
+[node name="RedSaber" parent="." instance=ExtResource( 11 )]
+stream = ExtResource( 8 )
+
 [connection signal="pressed" from="Button0x0" to="Game" method="_on_Button0x0_pressed"]
 [connection signal="pressed" from="Button0x1" to="." method="_on_Button0x1_pressed"]
 [connection signal="pressed" from="Button0x1" to="Game" method="_on_Button0x1_pressed"]
@@ -231,3 +252,5 @@ text = "Difícil"
 [connection signal="pressed" from="Button_easy" to="Game" method="_on_Button_easy_pressed"]
 [connection signal="pressed" from="Button_medium" to="Game" method="_on_Button_medium_pressed"]
 [connection signal="pressed" from="Button_hard" to="Game" method="_on_Button_hard_pressed"]
+[connection signal="pressed" from="Teste" to="Game" method="_on_Teste_pressed"]
+[connection signal="timeout" from="AnimationSaberToStartPosition" to="Game" method="_on_AnimationSaberToStartPosition_timeout"]

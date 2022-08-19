@@ -1,9 +1,3 @@
-botoes easy medio dificil
-
-easy = random
-medio = 50% minimax 50% random
-dificil = 100% minimax
-
 botar som baby yoda
 botar som darth vader
 
