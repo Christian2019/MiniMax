@@ -162,32 +162,18 @@ func intRandom(minV,maxV):
 	return int (rng.randf_range(minV, maxV))
 
 func resetSabers():
-	#
-	get_parent().get_node("RedSaber").free()
-	get_parent().get_node("BlueSaber").free()
-	var scene = load("res://Objects/RedSaber.tscn")
-	scene.resource_name="RedSaber"
-	var instance = scene.instance()
-	instance.set_name("RedSaber")
-	get_parent().add_child(instance)
-	var scene2 = load("res://Objects/BlueSaber.tscn")
-	scene2.resource_name="BlueSaber"
-	var instance2 = scene2.instance()
-	instance2.set_name("BlueSaber")
-	get_parent().add_child(instance2)
-	
-	print(get_parent().get_node("RedSaber").get_path())
-	#get_parent().get_node("RedSaber").volume_db=-80
-	#get_parent().get_node("BlueSaber").volume_db=-80
-	#get_parent().get_node("RedSaber").play()
-	#get_parent().get_node("BlueSaber").play()
-	#get_parent().get_node("AnimationSaberToStartPosition").start()
+	var video_file = "res://Assets/RedSaber.webm"
+	var sfx = load(video_file) 
+	get_parent().get_node("RedSaber").stream = sfx
+	var video_file2 = "res://Assets/BlueSaber.webm"
+	var sfx2 = load(video_file2) 
+	get_parent().get_node("BlueSaber").stream = sfx2
+	get_parent().get_node("RedSaber").visible=false
+	get_parent().get_node("BlueSaber").visible=false
 
 func start():
 	print("Inicio da partida: ")
-	#resetSabers()
-	get_parent().get_node("RedSaber").visible=false
-	get_parent().get_node("BlueSaber").visible=false
+	resetSabers()
 	$VaderBreathing.stop()
 	ButtonVisibility()
 	turno = 1
