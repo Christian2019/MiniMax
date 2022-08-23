@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BlueSaberSound.mp3-8f153cb8629e86fcde820b0f5bef7506.mp3str"
+
+[deps]
+
+source_file="res://Assets/BlueSaberSound.mp3"
+dest_files=[ "res://.import/BlueSaberSound.mp3-8f153cb8629e86fcde820b0f5bef7506.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

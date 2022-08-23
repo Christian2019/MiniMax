@@ -6,8 +6,6 @@ func _ready() -> void:
 	#get_node("Game").get("ativo")
 	#get_node("Game").set("ativo",true)
 
-
-
 			
 
 

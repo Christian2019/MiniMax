@@ -1,16 +1,63 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Game.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/EscolhaDePersonagem.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/fundo2.webm" type="VideoStream" id=4]
-[ext_resource path="res://Assets/Xolonium-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Assets/intro.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Scripts/Fundo.gd" type="Script" id=7]
 [ext_resource path="res://Assets/RedSaber.webm" type="VideoStream" id=8]
 [ext_resource path="res://Assets/BlueSaber.webm" type="VideoStream" id=9]
 [ext_resource path="res://Objects/BlueSaber.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Objects/RedSaber.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/redSaberAnimation/scene00010.png" type="Texture" id=12]
+[ext_resource path="res://Assets/redSaberAnimation/scene00013.png" type="Texture" id=13]
+[ext_resource path="res://Assets/redSaberAnimation/scene00001.png" type="Texture" id=14]
+[ext_resource path="res://Assets/redSaberAnimation/scene00007.png" type="Texture" id=15]
+[ext_resource path="res://Assets/redSaberAnimation/scene00016.png" type="Texture" id=16]
+[ext_resource path="res://Assets/redSaberAnimation/scene00004.png" type="Texture" id=17]
+[ext_resource path="res://Assets/redSaberAnimation/scene00052.png" type="Texture" id=18]
+[ext_resource path="res://Assets/redSaberAnimation/scene00019.png" type="Texture" id=19]
+[ext_resource path="res://Assets/redSaberAnimation/scene00055.png" type="Texture" id=20]
+[ext_resource path="res://Assets/redSaberAnimation/scene00058.png" type="Texture" id=21]
+[ext_resource path="res://Assets/redSaberAnimation/scene00025.png" type="Texture" id=22]
+[ext_resource path="res://Assets/redSaberAnimation/scene00046.png" type="Texture" id=23]
+[ext_resource path="res://Assets/redSaberAnimation/scene00061.png" type="Texture" id=24]
+[ext_resource path="res://Assets/redSaberAnimation/scene00028.png" type="Texture" id=25]
+[ext_resource path="res://Assets/redSaberAnimation/scene00037.png" type="Texture" id=26]
+[ext_resource path="res://Assets/redSaberAnimation/scene00034.png" type="Texture" id=27]
+[ext_resource path="res://Assets/redSaberAnimation/scene00040.png" type="Texture" id=28]
+[ext_resource path="res://Assets/redSaberAnimation/scene00022.png" type="Texture" id=29]
+[ext_resource path="res://Assets/redSaberAnimation/scene00031.png" type="Texture" id=30]
+[ext_resource path="res://Assets/redSaberAnimation/scene00043.png" type="Texture" id=31]
+[ext_resource path="res://Assets/redSaberAnimation/scene00049.png" type="Texture" id=32]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00043.png" type="Texture" id=33]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00055.png" type="Texture" id=34]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00049.png" type="Texture" id=35]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00052.png" type="Texture" id=36]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00061.png" type="Texture" id=37]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00046.png" type="Texture" id=38]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00058.png" type="Texture" id=39]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00007.png" type="Texture" id=40]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00040.png" type="Texture" id=41]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00022.png" type="Texture" id=42]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00013.png" type="Texture" id=43]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00001.png" type="Texture" id=44]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00016.png" type="Texture" id=45]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00025.png" type="Texture" id=46]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00034.png" type="Texture" id=47]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00004.png" type="Texture" id=48]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00010.png" type="Texture" id=49]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00028.png" type="Texture" id=50]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00019.png" type="Texture" id=51]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00031.png" type="Texture" id=52]
+[ext_resource path="res://Assets/blueSaberAnimation/scene00037.png" type="Texture" id=53]
+[ext_resource path="res://Assets/x.jpg" type="Texture" id=54]
+[ext_resource path="res://Assets/x_easy.png" type="Texture" id=55]
+[ext_resource path="res://Assets/x_medium.png" type="Texture" id=56]
+[ext_resource path="res://Assets/fonts/StarWarsFont.ttf" type="DynamicFontData" id=57]
+[ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=58]
+[ext_resource path="res://Assets/Star_Wars_Logo.svg.png" type="Texture" id=59]
 
 [sub_resource type="StyleBoxLine" id=13]
 color = Color( 0, 0, 0, 0 )
@@ -27,24 +74,51 @@ color = Color( 0, 0, 0, 0 )
 [sub_resource type="StyleBoxEmpty" id=9]
 
 [sub_resource type="DynamicFont" id=12]
-size = 45
-font_data = ExtResource( 5 )
+size = 47
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=23]
-bg_color = Color( 0.164706, 0.498039, 0.384314, 1 )
+bg_color = Color( 0, 1, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=17]
-bg_color = Color( 0.423529, 0.423529, 0.423529, 1 )
+bg_color = Color( 0.423529, 0.423529, 0.423529, 0.231373 )
+
+[sub_resource type="DynamicFont" id=26]
+size = 13
+font_data = ExtResource( 57 )
 
 [sub_resource type="StyleBoxFlat" id=22]
-bg_color = Color( 0.588235, 0.631373, 0.0431373, 1 )
+bg_color = Color( 1, 1, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=18]
+bg_color = Color( 0.6, 0.6, 0.6, 0.231373 )
+
+[sub_resource type="DynamicFont" id=27]
+size = 14
+font_data = ExtResource( 57 )
 
 [sub_resource type="StyleBoxFlat" id=24]
-bg_color = Color( 0.576471, 0, 0, 1 )
+bg_color = Color( 1, 0, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=19]
+bg_color = Color( 0.6, 0.6, 0.6, 0.231373 )
+
+[sub_resource type="DynamicFont" id=28]
+size = 13
+font_data = ExtResource( 57 )
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 44 ), ExtResource( 48 ), ExtResource( 40 ), ExtResource( 49 ), ExtResource( 43 ), ExtResource( 45 ), ExtResource( 51 ), ExtResource( 42 ), ExtResource( 46 ), ExtResource( 50 ), ExtResource( 52 ), ExtResource( 47 ), ExtResource( 53 ), ExtResource( 41 ), ExtResource( 33 ), ExtResource( 38 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 39 ), ExtResource( 37 ) ],
+"loop": false,
+"name": "BlueSaber",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 14 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 29 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 23 ), ExtResource( 32 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 24 ) ],
+"loop": false,
+"name": "RedSaber",
+"speed": 15.0
+} ]
 
 [node name="Main" type="Node2D"]
 z_index = -1
@@ -72,10 +146,10 @@ volume_db = -80.0
 autoplay = true
 
 [node name="Button0x0" type="Button" parent="."]
-margin_left = 404.0
-margin_top = 237.0
-margin_right = 617.0
-margin_bottom = 399.0
+margin_left = 383.0
+margin_top = 333.0
+margin_right = 596.0
+margin_bottom = 495.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -84,10 +158,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button0x1" type="Button" parent="."]
-margin_left = 634.0
-margin_top = 235.0
-margin_right = 847.0
-margin_bottom = 397.0
+margin_left = 613.0
+margin_top = 331.0
+margin_right = 826.0
+margin_bottom = 493.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -96,10 +170,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button1x2" type="Button" parent="."]
-margin_left = 863.0
-margin_top = 406.0
-margin_right = 1076.0
-margin_bottom = 568.0
+margin_left = 842.0
+margin_top = 502.0
+margin_right = 1055.0
+margin_bottom = 664.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -108,10 +182,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button1x0" type="Button" parent="."]
-margin_left = 407.0
-margin_top = 409.0
-margin_right = 620.0
-margin_bottom = 571.0
+margin_left = 386.0
+margin_top = 505.0
+margin_right = 599.0
+margin_bottom = 667.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -120,10 +194,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button1x1" type="Button" parent="."]
-margin_left = 637.0
-margin_top = 407.0
-margin_right = 850.0
-margin_bottom = 569.0
+margin_left = 616.0
+margin_top = 503.0
+margin_right = 829.0
+margin_bottom = 665.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -132,10 +206,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button2x2" type="Button" parent="."]
-margin_left = 861.0
-margin_top = 576.0
-margin_right = 1074.0
-margin_bottom = 738.0
+margin_left = 840.0
+margin_top = 672.0
+margin_right = 1053.0
+margin_bottom = 834.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -144,10 +218,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button2x0" type="Button" parent="."]
-margin_left = 405.0
-margin_top = 579.0
-margin_right = 618.0
-margin_bottom = 741.0
+margin_left = 384.0
+margin_top = 675.0
+margin_right = 597.0
+margin_bottom = 837.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -156,10 +230,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button2x1" type="Button" parent="."]
-margin_left = 635.0
-margin_top = 577.0
-margin_right = 848.0
-margin_bottom = 739.0
+margin_left = 614.0
+margin_top = 673.0
+margin_right = 827.0
+margin_bottom = 835.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -168,10 +242,10 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Button0x2" type="Button" parent="."]
-margin_left = 860.0
-margin_top = 234.0
-margin_right = 1073.0
-margin_bottom = 396.0
+margin_left = 839.0
+margin_top = 330.0
+margin_right = 1052.0
+margin_bottom = 492.0
 rect_pivot_offset = Vector2( 342, 92 )
 custom_styles/hover = SubResource( 13 )
 custom_styles/pressed = SubResource( 14 )
@@ -180,49 +254,92 @@ custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
 [node name="Label2" type="Label" parent="."]
-margin_left = 519.0
-margin_top = 30.0
-margin_right = 958.0
-margin_bottom = 137.0
-custom_colors/font_color = Color( 0.843137, 0.584314, 0.0313726, 1 )
+margin_left = 851.0
+margin_top = 82.0
+margin_right = 1290.0
+margin_bottom = 189.0
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 12 )
-text = "Star # Wars"
+text = "#"
 align = 1
 valign = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+volume_db = -9.644
 autoplay = true
 
 [node name="Button_easy" type="Button" parent="."]
-margin_left = 77.0
-margin_top = 134.0
-margin_right = 232.0
-margin_bottom = 174.0
-rect_scale = Vector2( 1.03475, 1.03475 )
+margin_left = 25.0
+margin_top = 44.0
+margin_right = 185.0
+margin_bottom = 84.0
+rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 23 )
 custom_styles/normal = SubResource( 17 )
-text = "Fácil"
+
+[node name="Sprite" type="Sprite" parent="Button_easy"]
+position = Vector2( 31.8078, 20.2948 )
+scale = Vector2( 0.200956, 0.20398 )
+texture = ExtResource( 55 )
+
+[node name="Label" type="Label" parent="Button_easy"]
+margin_left = 70.5
+margin_top = 7.5
+margin_right = 156.5
+margin_bottom = 28.5
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 26 )
+text = "Padawan"
 
 [node name="Button_medium" type="Button" parent="."]
-margin_left = 77.0
-margin_top = 181.0
-margin_right = 237.0
-margin_bottom = 221.0
+margin_left = 25.0
+margin_top = 128.0
+margin_right = 185.0
+margin_bottom = 168.0
+rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 22 )
 custom_styles/normal = SubResource( 18 )
-text = "Médio"
+
+[node name="Sprite" type="Sprite" parent="Button_medium"]
+position = Vector2( 31.8078, 20.2948 )
+scale = Vector2( 0.200956, 0.20398 )
+texture = ExtResource( 56 )
+
+[node name="Label" type="Label" parent="Button_medium"]
+margin_left = 64.0
+margin_top = 6.5
+margin_right = 166.0
+margin_bottom = 32.5
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 27 )
+text = "Jedi Knight"
 
 [node name="Button_hard" type="Button" parent="."]
-margin_left = 77.0
-margin_top = 227.0
-margin_right = 237.0
-margin_bottom = 267.0
+margin_left = 26.0
+margin_top = 212.0
+margin_right = 186.0
+margin_bottom = 252.0
+rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 24 )
 custom_styles/normal = SubResource( 19 )
-text = "Difícil"
+
+[node name="Sprite" type="Sprite" parent="Button_hard"]
+position = Vector2( 32, 21 )
+scale = Vector2( 0.200956, 0.20398 )
+texture = ExtResource( 54 )
+
+[node name="Label" type="Label" parent="Button_hard"]
+margin_left = 66.5
+margin_top = 11.0
+margin_right = 155.5
+margin_bottom = 29.0
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 28 )
+text = "Sith Master"
 
 [node name="Teste" type="Button" parent="."]
+visible = false
 margin_left = 48.0
 margin_top = 783.0
 margin_right = 185.0
@@ -239,6 +356,24 @@ stream = ExtResource( 9 )
 [node name="RedSaber" parent="." instance=ExtResource( 11 )]
 stream = ExtResource( 8 )
 
+[node name="SaberAnimation" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 739, 496 )
+rotation = 0.925962
+scale = Vector2( 0.233823, 1.41567 )
+frames = SubResource( 25 )
+animation = "BlueSaber"
+frame = 17
+
+[node name="TesteTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Logo" type="Sprite" parent="."]
+position = Vector2( 723.125, 136.063 )
+scale = Vector2( 0.838256, 0.577267 )
+texture = ExtResource( 59 )
+
 [connection signal="pressed" from="Button0x0" to="Game" method="_on_Button0x0_pressed"]
 [connection signal="pressed" from="Button0x1" to="." method="_on_Button0x1_pressed"]
 [connection signal="pressed" from="Button0x1" to="Game" method="_on_Button0x1_pressed"]
@@ -254,3 +389,4 @@ stream = ExtResource( 8 )
 [connection signal="pressed" from="Button_hard" to="Game" method="_on_Button_hard_pressed"]
 [connection signal="pressed" from="Teste" to="Game" method="_on_Teste_pressed"]
 [connection signal="timeout" from="AnimationSaberToStartPosition" to="Game" method="_on_AnimationSaberToStartPosition_timeout"]
+[connection signal="timeout" from="TesteTimer" to="Game" method="_on_TesteTimer_timeout"]

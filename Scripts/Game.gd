@@ -25,7 +25,12 @@ func changeImages():
 				get_node(path).animation="O"
 			#X
 			elif (matriz[i][j]=="x"):
-				get_node(path).animation="X"
+				if (dificuldade=="hard"):
+					get_node(path).animation="X"
+				elif (dificuldade=="medium"):
+					get_node(path).animation="X_M"
+				elif (dificuldade=="easy"):
+					get_node(path).animation="X_E"
 			#Vazio
 			elif (matriz[i][j]==" "):
 				get_node(path).animation="Vazio"
@@ -42,17 +47,17 @@ func _process(delta: float) -> void:
 
 func changeColorButton():
 		if (dificuldade== "easy"):
-			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#2A7F62"))
-			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
-			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("3b00ff00"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("3b999999"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("3b999999"))
 		elif (dificuldade== "medium"):
-			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
-			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("96a10b"))
-			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("3b999999"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("3bffff00"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("3b999999"))
 		elif (dificuldade== "hard"):
-			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
-			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("#6c6c6c"))
-			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("930000"))
+			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("3b999999"))
+			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("3b999999"))
+			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("3bff0000"))
 		
 func ButtonVisibility():
 	get_parent().get_node("Button_easy").visible=!ButtonDificuldade
@@ -161,6 +166,8 @@ func intRandom(minV,maxV):
 	rng.randomize()
 	return int (rng.randf_range(minV, maxV))
 
+"""
+Reseta animacao de video
 func resetSabers():
 	var video_file = "res://Assets/RedSaber.webm"
 	var sfx = load(video_file) 
@@ -170,10 +177,12 @@ func resetSabers():
 	get_parent().get_node("BlueSaber").stream = sfx2
 	get_parent().get_node("RedSaber").visible=false
 	get_parent().get_node("BlueSaber").visible=false
+"""
+
 
 func start():
 	print("Inicio da partida: ")
-	resetSabers()
+	get_parent().get_node("SaberAnimation").visible=false
 	$VaderBreathing.stop()
 	ButtonVisibility()
 	turno = 1
@@ -340,39 +349,50 @@ func winAnimation(vencedor,tipo):
 		typeSaber="RedSaber"
 	else:
 		typeSaber="BlueSaber"
-	#Coluna 1 
+	#Coluna 1	
 	if(tipo=="c1"):
-		wAPlayer(380,211,240,550,0,typeSaber)
+		wAPlayer(480,580,0.234,0.872,0,typeSaber)
 	#Coluna 2
 	elif(tipo=="c2"):
-		wAPlayer(620,211,240,550,0,typeSaber)
+		wAPlayer(710,580,0.234,0.872,0,typeSaber)
 	#Coluna 3
 	elif(tipo=="c3"):
-		wAPlayer(855,211,240,550,0,typeSaber)
+		wAPlayer(940,580,0.234,0.872,0,typeSaber)
 	#Linha 1
 	elif(tipo=="l1"):
-	 wAPlayer(1130,211,240,750,90,typeSaber)
+	 wAPlayer(710,401,0.234,1.152,90,typeSaber)
 	#Linha 2
 	elif(tipo=="l2"):
-	 wAPlayer(1130,350,240,750,90,typeSaber)
+	 wAPlayer(710,571,0.234,1.152,90,typeSaber)
 	#Linha 3
 	elif(tipo=="l3"):
-	 wAPlayer(1130,520,240,750,90,typeSaber)
+	 wAPlayer(710,741,0.234,1.152,90,typeSaber)
 	#Diagonal 1
 	elif(tipo=="d1"):
-	 wAPlayer(1200,600,240,900,120,typeSaber)
+	 wAPlayer(710,580,0.234,1.43,127,typeSaber)
 	#Diagonal 2
 	elif(tipo=="d2"):
-	 wAPlayer(520,900,240,900,225,typeSaber)
+	  wAPlayer(709,586,0.234,1.416,53.1,typeSaber)
 	
-func wAPlayer(x,y,sizeX,sizeY,Rotation,typeSaber):
-	get_parent().get_node(typeSaber).rect_position.x = x
-	get_parent().get_node(typeSaber).rect_position.y = y
-	get_parent().get_node(typeSaber).rect_size.x=sizeX
-	get_parent().get_node(typeSaber).rect_size.y=sizeY
-	get_parent().get_node(typeSaber).rect_rotation=Rotation
-	get_parent().get_node(typeSaber).visible=true
-	get_parent().get_node(typeSaber).play()
+func wAPlayer(x,y,scaleX,scaleY,Rotation,typeSaber):
+	get_parent().get_node("SaberAnimation").position.x = x
+	get_parent().get_node("SaberAnimation").position.y = y
+	get_parent().get_node("SaberAnimation").scale.x=scaleX
+	get_parent().get_node("SaberAnimation").scale.y=scaleY
+	get_parent().get_node("SaberAnimation").rotation_degrees=Rotation
+	get_parent().get_node("SaberAnimation").animation=typeSaber
+	
+	get_parent().get_node("SaberAnimation").frame=1
+	if (typeSaber=="RedSaber"):
+		$XWinSound.play()
+		get_node("XWinSound/Stop").start()
+	else:
+		$OWinSound.play()
+		get_node("OWinSound/Stop").start()
+	
+	get_parent().get_node("SaberAnimation").play()
+	get_parent().get_node("SaberAnimation").visible=true
+	
 
 func _on_Button0x0_pressed() -> void:
 	#print("Button 0x0 pressed!")
@@ -424,23 +444,58 @@ func _on_Button_easy_pressed() -> void:
 	dificuldade="easy"
 	changeColor=true
 	print(dificuldade)
+	changeImages()
 
 func _on_Button_medium_pressed() -> void:
 	dificuldade= "medium"
 	changeColor=true
 	print(dificuldade)
+	changeImages()
 
 func _on_Button_hard_pressed() -> void:
 	dificuldade= "hard"
 	changeColor=true
 	print(dificuldade)
+	changeImages()
 
 
 func _on_Teste_pressed() -> void:
-	wAPlayer(380,211,240,550,0,"RedSaber")
+	wAPlayer(770,490,240,550,90,"RedSaber")
 
 func _on_AnimationSaberToStartPosition_timeout() -> void:
 		get_parent().get_node("RedSaber").stop()
 		get_parent().get_node("BlueSaber").stop()
 		get_parent().get_node("RedSaber").volume_db=0
 		get_parent().get_node("BlueSaber").volume_db=0
+
+
+func _on_TesteTimer_timeout() -> void:
+	return
+	
+	var tipo = "d2"
+	var typeSaber = "RedSaber"
+	if(tipo=="c1"):
+		wAPlayer(480,580,0.234,0.872,0,typeSaber)
+	#Coluna 2
+	elif(tipo=="c2"):
+		wAPlayer(710,580,0.234,0.872,0,typeSaber)
+	#Coluna 3
+	elif(tipo=="c3"):
+		wAPlayer(940,580,0.234,0.872,0,typeSaber)
+	#Linha 1
+	elif(tipo=="l1"):
+	 wAPlayer(710,401,0.234,1.152,90,typeSaber)
+	#Linha 2
+	elif(tipo=="l2"):
+	 wAPlayer(710,571,0.234,1.152,90,typeSaber)
+	#Linha 3
+	elif(tipo=="l3"):
+	 wAPlayer(710,741,0.234,1.152,90,typeSaber)
+	#Diagonal 1
+	elif(tipo=="d1"):
+	 wAPlayer(710,580,0.234,1.43,127,typeSaber)
+	#Diagonal 2
+	elif(tipo=="d2"):
+	  wAPlayer(709,586,0.234,1.416,53.1,typeSaber)
+	
+
