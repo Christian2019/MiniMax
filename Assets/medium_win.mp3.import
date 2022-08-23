@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/medium_win.mp3-46ace3933ef8059f931418472c11d779.mp3str"
+
+[deps]
+
+source_file="res://Assets/medium_win.mp3"
+dest_files=[ "res://.import/medium_win.mp3-46ace3933ef8059f931418472c11d779.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

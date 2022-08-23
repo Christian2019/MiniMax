@@ -86,6 +86,16 @@ func _on_Maquina_timeout() -> void:
 	print("Maquina joga em: ",p.x,"x",p.y)
 	changeImages()
 	if (isGameFinish(matriz,false)):
+		if (dificuldade=="hard"):
+			$FimDeJogo.wait_time=3
+			$Hard_Win.play()
+		elif (dificuldade=="medium"):
+			$FimDeJogo.wait_time=1.5
+			$Medium_Win.play()
+		elif (dificuldade=="easy"):
+			$FimDeJogo.wait_time=2
+			$Easy_Win.play()
+		
 		$FimDeJogo.start()
 	else:
 		$Estado.text="Vez do Jogador"
@@ -340,6 +350,8 @@ func isFree(x,y):
 		print("Jogador joga em: ",x,"x",y)
 		changeImages()
 		if (isGameFinish(matriz,false)):
+			$Player_Win.play()
+			$FimDeJogo.wait_time=1.5
 			$FimDeJogo.start()
 		else:
 			maquinaStart()

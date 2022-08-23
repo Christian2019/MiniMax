@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tabuleiro.png" type="Texture" id=2]
@@ -14,6 +14,10 @@
 [ext_resource path="res://Assets/x_medium.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Stjldbl2.ttf" type="DynamicFontData" id=13]
 [ext_resource path="res://Assets/BlasterSound.mp3" type="AudioStream" id=14]
+[ext_resource path="res://Assets/hard_win.mp3" type="AudioStream" id=15]
+[ext_resource path="res://Assets/medium_win.mp3" type="AudioStream" id=16]
+[ext_resource path="res://Assets/easy_win.mp3" type="AudioStream" id=17]
+[ext_resource path="res://Assets/player_win.mp3" type="AudioStream" id=18]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -126,7 +130,7 @@ valign = 1
 one_shot = true
 
 [node name="FimDeJogo" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 3.0
 one_shot = true
 
 [node name="VaderBreathing" type="AudioStreamPlayer2D" parent="."]
@@ -158,6 +162,22 @@ one_shot = true
 [node name="BlasterSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 14 )
 volume_db = 6.992
+
+[node name="Hard_Win" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 15 )
+volume_db = 24.0
+
+[node name="Medium_Win" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 16 )
+volume_db = 24.0
+
+[node name="Easy_Win" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 17 )
+volume_db = 15.135
+
+[node name="Player_Win" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 18 )
+volume_db = 24.0
 
 [connection signal="timeout" from="Maquina" to="." method="_on_Maquina_timeout"]
 [connection signal="timeout" from="FimDeJogo" to="." method="_on_FimDeJogo_timeout"]
