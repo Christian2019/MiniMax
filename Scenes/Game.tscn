@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tabuleiro.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Assets/x_easy.png" type="Texture" id=11]
 [ext_resource path="res://Assets/x_medium.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Stjldbl2.ttf" type="DynamicFontData" id=13]
+[ext_resource path="res://Assets/BlasterSound.mp3" type="AudioStream" id=14]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -153,6 +154,10 @@ script = ExtResource( 10 )
 [node name="Stop" type="Timer" parent="XWinSound"]
 wait_time = 2.0
 one_shot = true
+
+[node name="BlasterSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 14 )
+volume_db = 6.992
 
 [connection signal="timeout" from="Maquina" to="." method="_on_Maquina_timeout"]
 [connection signal="timeout" from="FimDeJogo" to="." method="_on_FimDeJogo_timeout"]

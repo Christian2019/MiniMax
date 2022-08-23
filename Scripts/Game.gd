@@ -67,6 +67,7 @@ func ButtonVisibility():
 	
 #Jogada da maquina	
 func _on_Maquina_timeout() -> void:
+	$BlasterSound.play()
 	var p
 	if (dificuldade=="easy"||turno==1):
 		p =random()
@@ -183,7 +184,7 @@ func resetSabers():
 func start():
 	print("Inicio da partida: ")
 	get_parent().get_node("SaberAnimation").visible=false
-	$VaderBreathing.stop()
+	#$VaderBreathing.stop()
 	ButtonVisibility()
 	turno = 1
 	matriz = cleanMatriz()
@@ -196,9 +197,10 @@ func start():
 		
 func maquinaStart():
 	$Estado.text="Vez da Maquina"
-	if(!$VaderBreathing.playing):
-		$VaderBreathing.play()
-		$VaderBreathing/Stop.start()
+	#if(!$VaderBreathing.playing):
+	#	$VaderBreathing.play()
+	#	$VaderBreathing/Stop.start()
+	#$BlasterSound.play()
 	$Maquina.start()
 
 func isGameFinish(matriz,miniMax):
@@ -332,6 +334,7 @@ func printarMatriz(matriz):
 
 func isFree(x,y):
 	if (matriz[x][y]==" "):
+		$BlasterSound.play()
 		matriz[x][y]="o"
 		turno+=1
 		print("Jogador joga em: ",x,"x",y)
