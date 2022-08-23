@@ -18,6 +18,11 @@ config/icon="res://icon.png"
 
 window/size/width=1500
 window/size/height=900
+mouse_cursor/custom_image="res://Assets/mouseCursorImage.png"
+
+[global]
+
+mouse=false
 
 [gui]
 
