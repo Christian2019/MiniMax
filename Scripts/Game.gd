@@ -350,8 +350,11 @@ func isFree(x,y):
 		print("Jogador joga em: ",x,"x",y)
 		changeImages()
 		if (isGameFinish(matriz,false)):
-			$Player_Win.play()
-			$FimDeJogo.wait_time=1.5
+			if ($Estado.text!="Empate"):
+				$Player_Win.play()
+				$FimDeJogo.wait_time=1.5
+			else:
+				$FimDeJogo.wait_time=1
 			$FimDeJogo.start()
 		else:
 			maquinaStart()

@@ -1,7 +1,3 @@
+player x player
 
-
-Ir ampliando o size da imagem do sabre ao longo do tempo
-
-cores
-
-padwan knight jedi master jedi
+limpar o que nao precisa
