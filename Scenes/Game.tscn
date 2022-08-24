@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tabuleiro.png" type="Texture" id=2]
@@ -50,6 +50,10 @@ animations = [ {
 [sub_resource type="DynamicFont" id=11]
 size = 26
 outline_color = Color( 0.65098, 0.407843, 0.0470588, 1 )
+font_data = ExtResource( 13 )
+
+[sub_resource type="DynamicFont" id=12]
+size = 26
 font_data = ExtResource( 13 )
 
 [node name="Game" type="Node2D"]
@@ -178,6 +182,15 @@ volume_db = 15.135
 [node name="Player_Win" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 18 )
 volume_db = 24.0
+
+[node name="Turno" type="Label" parent="."]
+margin_left = 377.0
+margin_top = 252.0
+margin_right = 504.0
+margin_bottom = 294.0
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 12 )
+text = "Turno: 1"
 
 [connection signal="timeout" from="Maquina" to="." method="_on_Maquina_timeout"]
 [connection signal="timeout" from="FimDeJogo" to="." method="_on_FimDeJogo_timeout"]

@@ -4,6 +4,7 @@ var dificuldade = "hard"
 var changeColor = true
 var turno = 1
 var ButtonDificuldade= false
+var playerVSPlayer=false
 
 func cleanMatriz():
 	return [[" "," "," "],
@@ -34,6 +35,7 @@ func changeImages():
 			#Vazio
 			elif (matriz[i][j]==" "):
 				get_node(path).animation="Vazio"
+	printarMatriz(matriz)
 
 func _ready() -> void:
 	start()
@@ -83,22 +85,25 @@ func _on_Maquina_timeout() -> void:
 		p =miniMax()
 	matriz[p.x][p.y]="x"
 	turno+=1
+	$Turno.text= "Turno: "+str(turno)
 	print("Maquina joga em: ",p.x,"x",p.y)
 	changeImages()
 	if (isGameFinish(matriz,false)):
-		if (dificuldade=="hard"):
-			$FimDeJogo.wait_time=3
-			$Hard_Win.play()
-		elif (dificuldade=="medium"):
+		if ($Estado.text!="Empate"):
+			if (dificuldade=="hard"):
+				$FimDeJogo.wait_time=3
+				$Hard_Win.play()
+			elif (dificuldade=="medium"):
+				$FimDeJogo.wait_time=1.5
+				$Medium_Win.play()
+			elif (dificuldade=="easy"):
+				$FimDeJogo.wait_time=2
+				$Easy_Win.play()
+		else:
 			$FimDeJogo.wait_time=1.5
-			$Medium_Win.play()
-		elif (dificuldade=="easy"):
-			$FimDeJogo.wait_time=2
-			$Easy_Win.play()
-		
 		$FimDeJogo.start()
 	else:
-		$Estado.text="Vez do Jogador"
+		$Estado.text="Vez do Jogador 1"
 		
 func miniMax():
 	var vitorias = []
@@ -195,15 +200,22 @@ func start():
 	print("Inicio da partida: ")
 	get_parent().get_node("SaberAnimation").visible=false
 	#$VaderBreathing.stop()
-	ButtonVisibility()
+	get_parent().get_node("Button_easy").visible=true
+	get_parent().get_node("Button_medium").visible=true
+	get_parent().get_node("Button_hard").visible=true
+	ButtonDificuldade=true
 	turno = 1
+	$Turno.text= "Turno: "+str(turno)
 	matriz = cleanMatriz()
 	changeImages()
 	var i = intRandom(0,2)
 	if (i==0):
-		$Estado.text="Vez do Jogador"
+		$Estado.text="Vez do Jogador 1"
 	else:
-		maquinaStart()
+		if (playerVSPlayer):
+			$Estado.text="Vez do Jogador 2"
+		else:
+			maquinaStart()
 		
 func maquinaStart():
 	$Estado.text="Vez da Maquina"
@@ -223,7 +235,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:	
 			print ("Vitoria: ",matriz[0][0])
-			$Estado.text="Vitoria do " + matriz[0][0]
+			#$Estado.text="Vitoria do " + matriz[0][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de linha 1")
 			winAnimation(matriz[0][0],"l1")
 			return true
@@ -235,7 +253,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[1][0])
-			$Estado.text="Vitoria do " + matriz[1][0]
+			#$Estado.text="Vitoria do " + matriz[1][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de linha 2")
 			winAnimation(matriz[1][0],"l2")
 			return true
@@ -247,7 +271,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[2][0])
-			$Estado.text="Vitoria do " + matriz[2][0]
+			#$Estado.text="Vitoria do " + matriz[2][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de linha 3")
 			winAnimation(matriz[2][0],"l3")
 			return true
@@ -260,7 +290,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][0])
-			$Estado.text="Vitoria do " + matriz[0][0]
+			#$Estado.text="Vitoria do " + matriz[0][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de coluna 1")
 			winAnimation(matriz[0][0],"c1")
 			return true
@@ -272,7 +308,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][1])
-			$Estado.text="Vitoria do " + matriz[0][1]
+			#$Estado.text="Vitoria do " + matriz[0][1]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de coluna 2")
 			winAnimation(matriz[0][1],"c2")
 			return true
@@ -284,7 +326,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][2])
-			$Estado.text="Vitoria do " + matriz[0][2]
+			#$Estado.text="Vitoria do " + matriz[0][2]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de coluna 3")
 			winAnimation(matriz[0][2],"c3")
 			return true		
@@ -297,7 +345,13 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][0])
-			$Estado.text="Vitoria do " + matriz[0][0]
+			#$Estado.text="Vitoria do " + matriz[0][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de diagonal 1")
 			winAnimation(matriz[0][0],"d1")
 			return true
@@ -309,7 +363,13 @@ func isGameFinish(matriz,miniMax):
 				return -1	
 		else:
 			print ("Vitoria: ",matriz[2][0])
-			$Estado.text="Vitoria do " + matriz[2][0]
+			#$Estado.text="Vitoria do " + matriz[2][0]
+			if ($Estado.text=="Vez do Jogador 1"):
+				$Estado.text="Vitória do Jogador 1"
+			elif ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vitória do Jogador 2"
+			elif ($Estado.text=="Vez da Maquina"):
+				$Estado.text="Vitória da Maquina"
 			print("Vitoria de diagonal 2")
 			winAnimation(matriz[2][0],"d2")
 			return true		
@@ -343,21 +403,44 @@ func printarMatriz(matriz):
 		print(line)
 
 func isFree(x,y):
+	if ($Estado.text!="Vez do Jogador 1" and $Estado.text!="Vez do Jogador 2"):
+		return
 	if (matriz[x][y]==" "):
 		$BlasterSound.play()
-		matriz[x][y]="o"
 		turno+=1
-		print("Jogador joga em: ",x,"x",y)
+		$Turno.text= "Turno: "+str(turno)
+		if ($Estado.text=="Vez do Jogador 1"):
+			matriz[x][y]="o"
+			print("Jogador 1 joga em: ",x,"x",y)
+		if ($Estado.text=="Vez do Jogador 2"):
+			matriz[x][y]="x"
+			print("Jogador 2 joga em: ",x,"x",y)
 		changeImages()
 		if (isGameFinish(matriz,false)):
 			if ($Estado.text!="Empate"):
-				$Player_Win.play()
-				$FimDeJogo.wait_time=1.5
+				if ($Estado.text=="Vitória do Jogador 2"):
+					if (dificuldade=="hard"):
+						$FimDeJogo.wait_time=3
+						$Hard_Win.play()
+					elif (dificuldade=="medium"):
+						$FimDeJogo.wait_time=1.5
+						$Medium_Win.play()
+					elif (dificuldade=="easy"):
+						$FimDeJogo.wait_time=2
+						$Easy_Win.play()
+				else:
+					$Player_Win.play()
+					$FimDeJogo.wait_time=1.5
 			else:
 				$FimDeJogo.wait_time=1
 			$FimDeJogo.start()
 		else:
-			maquinaStart()
+			if ($Estado.text=="Vez do Jogador 2"):
+				$Estado.text="Vez do Jogador 1"
+			elif($Estado.text=="Vez do Jogador 1" and playerVSPlayer):
+				$Estado.text="Vez do Jogador 2"
+			else:
+			 maquinaStart()
 	else:
 		print("Jogada nao permitida")
 
@@ -414,48 +497,38 @@ func wAPlayer(x,y,scaleX,scaleY,Rotation,typeSaber):
 
 func _on_Button0x0_pressed() -> void:
 	#print("Button 0x0 pressed!")
-
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,0)		
 
 func _on_Button0x1_pressed() -> void:
 	#print("Button 0x1 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,1)	
 
 func _on_Button0x2_pressed() -> void:
 	#print("Button 0x2 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(0,2)	
 	
 func _on_Button1x0_pressed() -> void:
 	#print("Button 1x0 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(1,0)	
 
 func _on_Button1x1_pressed() -> void:
 	#print("Button 1x1 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(1,1)	
 
 func _on_Button1x2_pressed() -> void:
 	#print("Button 1x2 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(1,2)	
 
 func _on_Button2x0_pressed() -> void:
 	#print("Button 2x0 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(2,0)	
 
 func _on_Button2x1_pressed() -> void:
 	#print("Button 2x1 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(2,1)	
 
 func _on_Button2x2_pressed() -> void:
 	#print("Button 2x2 pressed!")
-	if ($Estado.text=="Vez do Jogador"):
 		isFree(2,2)	
 
 func _on_Button_easy_pressed() -> void:
@@ -515,5 +588,18 @@ func _on_TesteTimer_timeout() -> void:
 	#Diagonal 2
 	elif(tipo=="d2"):
 	  wAPlayer(709,586,0.234,1.416,53.1,typeSaber)
+
+func _on_PlayerVsPlayer_pressed() -> void:
+	 playerVSPlayer =true
+	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
+	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
+
+
+func _on_PlayerVsMachine_pressed() -> void:
+	 playerVSPlayer =false
+	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
+	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
 	
 
+func _on_Restart_pressed() -> void:
+	start()
