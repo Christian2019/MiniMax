@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=2]
+[gd_scene load_steps=82 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Game.tscn" type="PackedScene" id=2]
@@ -55,7 +55,6 @@
 [ext_resource path="res://Assets/x.jpg" type="Texture" id=54]
 [ext_resource path="res://Assets/x_easy.png" type="Texture" id=55]
 [ext_resource path="res://Assets/x_medium.png" type="Texture" id=56]
-[ext_resource path="res://Assets/fonts/StarWarsFont.ttf" type="DynamicFontData" id=57]
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=58]
 [ext_resource path="res://Assets/Star_Wars_Logo.svg.png" type="Texture" id=59]
 
@@ -82,30 +81,45 @@ bg_color = Color( 0, 1, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=17]
 bg_color = Color( 0.423529, 0.423529, 0.423529, 0.231373 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
 
 [sub_resource type="DynamicFont" id=26]
 size = 13
-font_data = ExtResource( 57 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=22]
 bg_color = Color( 1, 1, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=18]
 bg_color = Color( 0.6, 0.6, 0.6, 0.231373 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
 
 [sub_resource type="DynamicFont" id=27]
 size = 14
-font_data = ExtResource( 57 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=24]
 bg_color = Color( 1, 0, 0, 0.231373 )
 
 [sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0.6, 0.6, 0.6, 0.231373 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
 
 [sub_resource type="DynamicFont" id=28]
 size = 13
-font_data = ExtResource( 57 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="SpriteFrames" id=25]
 animations = [ {
@@ -122,33 +136,48 @@ animations = [ {
 
 [sub_resource type="DynamicFont" id=35]
 size = 12
-font_data = ExtResource( 57 )
-
-[sub_resource type="StyleBoxFlat" id=32]
-bg_color = Color( 1, 0.913725, 0.0980392, 0.294118 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=30]
 bg_color = Color( 0.423529, 0.423529, 0.423529, 0.231373 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
 
 [sub_resource type="DynamicFont" id=36]
 size = 12
-font_data = ExtResource( 57 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=33]
 bg_color = Color( 1, 0.913725, 0.0980392, 0.294118 )
 
-[sub_resource type="StyleBoxFlat" id=34]
-bg_color = Color( 1, 0.913725, 0.0980392, 0.294118 )
-
 [sub_resource type="StyleBoxFlat" id=29]
 bg_color = Color( 1, 0.913725, 0.0980392, 0.294118 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
 
 [sub_resource type="DynamicFont" id=37]
 size = 12
-font_data = ExtResource( 57 )
+outline_color = Color( 1, 0.913725, 0.0980392, 1 )
+font_data = ExtResource( 58 )
 
 [sub_resource type="StyleBoxFlat" id=31]
 bg_color = Color( 0.423529, 0.423529, 0.423529, 0.231373 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0.913725, 0.0980392, 1 )
+
+[sub_resource type="DynamicFont" id=38]
+size = 26
+outline_color = Color( 0.65098, 0.407843, 0.0470588, 1 )
+font_data = ExtResource( 58 )
 
 [node name="Main" type="Node2D"]
 z_index = -1
@@ -169,8 +198,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -2.0
 margin_top = -2.0
-margin_right = 1523.0
-margin_bottom = 918.0
+margin_right = 1430.0
+margin_bottom = 899.0
 stream = ExtResource( 4 )
 volume_db = -80.0
 autoplay = true
@@ -300,10 +329,10 @@ volume_db = -9.644
 autoplay = true
 
 [node name="Button_easy" type="Button" parent="."]
-margin_left = 25.0
-margin_top = 44.0
-margin_right = 185.0
-margin_bottom = 84.0
+margin_left = 23.0
+margin_top = 356.0
+margin_right = 183.0
+margin_bottom = 396.0
 rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 23 )
 custom_styles/normal = SubResource( 17 )
@@ -314,19 +343,21 @@ scale = Vector2( 0.200956, 0.20398 )
 texture = ExtResource( 55 )
 
 [node name="Label" type="Label" parent="Button_easy"]
-margin_left = 70.5
-margin_top = 7.5
-margin_right = 156.5
-margin_bottom = 28.5
+margin_left = 70.0
+margin_top = 2.0
+margin_right = 156.0
+margin_bottom = 39.0
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 26 )
-text = "Padawan"
+text = "Fácil
+Padawan"
+align = 1
 
 [node name="Button_medium" type="Button" parent="."]
-margin_left = 25.0
-margin_top = 128.0
-margin_right = 185.0
-margin_bottom = 168.0
+margin_left = 23.0
+margin_top = 440.0
+margin_right = 183.0
+margin_bottom = 480.0
 rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 22 )
 custom_styles/normal = SubResource( 18 )
@@ -337,19 +368,21 @@ scale = Vector2( 0.200956, 0.20398 )
 texture = ExtResource( 56 )
 
 [node name="Label" type="Label" parent="Button_medium"]
-margin_left = 64.0
-margin_top = 6.5
-margin_right = 166.0
-margin_bottom = 32.5
+margin_left = 61.5
+margin_top = -0.5
+margin_right = 163.5
+margin_bottom = 38.5
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 27 )
-text = "Jedi Knight"
+text = "Médio
+Jedi Knight"
+align = 1
 
 [node name="Button_hard" type="Button" parent="."]
-margin_left = 26.0
-margin_top = 212.0
-margin_right = 186.0
-margin_bottom = 252.0
+margin_left = 24.0
+margin_top = 524.0
+margin_right = 184.0
+margin_bottom = 564.0
 rect_scale = Vector2( 2, 2 )
 custom_styles/hover = SubResource( 24 )
 custom_styles/normal = SubResource( 19 )
@@ -360,21 +393,15 @@ scale = Vector2( 0.200956, 0.20398 )
 texture = ExtResource( 54 )
 
 [node name="Label" type="Label" parent="Button_hard"]
-margin_left = 66.5
-margin_top = 11.0
-margin_right = 155.5
-margin_bottom = 29.0
+margin_left = 67.5
+margin_top = 1.5
+margin_right = 156.5
+margin_bottom = 38.5
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 28 )
-text = "Sith Master"
-
-[node name="Teste" type="Button" parent="."]
-visible = false
-margin_left = 48.0
-margin_top = 783.0
-margin_right = 185.0
-margin_bottom = 858.0
-text = "TESTE"
+text = "Difícil
+Sith Master"
+align = 1
 
 [node name="AnimationSaberToStartPosition" type="Timer" parent="."]
 wait_time = 0.23
@@ -405,41 +432,82 @@ scale = Vector2( 0.838256, 0.577267 )
 texture = ExtResource( 59 )
 
 [node name="PlayerVsPlayer" type="Button" parent="."]
-margin_left = 1163.0
-margin_top = 128.0
-margin_right = 1323.0
-margin_bottom = 168.0
+margin_left = 22.0
+margin_top = 773.0
+margin_right = 182.0
+margin_bottom = 813.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 35 )
-custom_styles/pressed = SubResource( 32 )
 custom_styles/normal = SubResource( 30 )
 text = "Jogador vs Jogador"
 
 [node name="PlayerVsMachine" type="Button" parent="."]
-margin_left = 1163.0
-margin_top = 44.0
-margin_right = 1323.0
-margin_bottom = 84.0
+margin_left = 22.0
+margin_top = 689.0
+margin_right = 182.0
+margin_bottom = 729.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color_disabled = Color( 1, 0.913725, 0.0980392, 1 )
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 36 )
 custom_styles/pressed = SubResource( 33 )
-custom_styles/focus = SubResource( 34 )
 custom_styles/normal = SubResource( 29 )
 text = "Jogador vs Máquina"
 
 [node name="Restart" type="Button" parent="."]
-margin_left = 1163.0
-margin_top = 212.0
-margin_right = 1323.0
-margin_bottom = 252.0
+margin_left = 1095.0
+margin_top = 314.0
+margin_right = 1255.0
+margin_bottom = 354.0
 rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_focus = Color( 1, 0.913725, 0.0980392, 1 )
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_hover = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_pressed = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 37 )
 custom_styles/normal = SubResource( 31 )
-text = "Recomeçar"
+text = "Recomeçar a partida"
+
+[node name="Dificuldade" type="Label" parent="."]
+margin_left = 83.0
+margin_top = 299.0
+margin_right = 245.0
+margin_bottom = 332.0
+size_flags_stretch_ratio = 0.82
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 38 )
+text = "Dificuldade:"
+align = 1
+valign = 1
+
+[node name="Modo" type="Label" parent="."]
+margin_left = 72.0
+margin_top = 639.0
+margin_right = 279.0
+margin_bottom = 672.0
+size_flags_stretch_ratio = 0.82
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 38 )
+text = "Modo de Jogo:"
+align = 1
+valign = 1
+
+[node name="Sair" type="Button" parent="."]
+margin_left = 1097.0
+margin_top = 775.0
+margin_right = 1257.0
+margin_bottom = 815.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_focus = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_hover = Color( 1, 0.913725, 0.0980392, 1 )
+custom_colors/font_color_pressed = Color( 1, 0.913725, 0.0980392, 1 )
+custom_fonts/font = SubResource( 37 )
+custom_styles/normal = SubResource( 31 )
+text = "Sair do Jogo"
 
 [connection signal="pressed" from="Button0x0" to="Game" method="_on_Button0x0_pressed"]
 [connection signal="pressed" from="Button0x1" to="Game" method="_on_Button0x1_pressed"]
@@ -453,9 +521,9 @@ text = "Recomeçar"
 [connection signal="pressed" from="Button_easy" to="Game" method="_on_Button_easy_pressed"]
 [connection signal="pressed" from="Button_medium" to="Game" method="_on_Button_medium_pressed"]
 [connection signal="pressed" from="Button_hard" to="Game" method="_on_Button_hard_pressed"]
-[connection signal="pressed" from="Teste" to="Game" method="_on_Teste_pressed"]
 [connection signal="timeout" from="AnimationSaberToStartPosition" to="Game" method="_on_AnimationSaberToStartPosition_timeout"]
 [connection signal="timeout" from="TesteTimer" to="Game" method="_on_TesteTimer_timeout"]
 [connection signal="pressed" from="PlayerVsPlayer" to="Game" method="_on_PlayerVsPlayer_pressed"]
 [connection signal="pressed" from="PlayerVsMachine" to="Game" method="_on_PlayerVsMachine_pressed"]
 [connection signal="pressed" from="Restart" to="Game" method="_on_Restart_pressed"]
+[connection signal="pressed" from="Sair" to="Game" method="_on_Sair_pressed"]

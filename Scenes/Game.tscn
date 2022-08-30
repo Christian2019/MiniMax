@@ -119,10 +119,10 @@ frames = SubResource( 1 )
 animation = "X_E"
 
 [node name="Estado" type="Label" parent="."]
-margin_left = 466.751
-margin_top = 213.0
-margin_right = 964.751
-margin_bottom = 327.0
+margin_left = 601.0
+margin_top = 266.0
+margin_right = 682.0
+margin_bottom = 299.0
 size_flags_stretch_ratio = 0.82
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 11 )
@@ -184,13 +184,15 @@ stream = ExtResource( 18 )
 volume_db = 24.0
 
 [node name="Turno" type="Label" parent="."]
-margin_left = 377.0
-margin_top = 252.0
-margin_right = 504.0
-margin_bottom = 294.0
+margin_left = 1096.0
+margin_top = 558.0
+margin_right = 1211.0
+margin_bottom = 591.0
 custom_colors/font_color = Color( 1, 0.913725, 0.0980392, 1 )
 custom_fonts/font = SubResource( 12 )
 text = "Turno: 1"
+align = 1
+valign = 1
 
 [connection signal="timeout" from="Maquina" to="." method="_on_Maquina_timeout"]
 [connection signal="timeout" from="FimDeJogo" to="." method="_on_FimDeJogo_timeout"]

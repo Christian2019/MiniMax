@@ -41,8 +41,8 @@ func _ready() -> void:
 	start()
 	
 func _process(delta: float) -> void:
-	if (turno>2 and ButtonDificuldade):
-		ButtonVisibility()
+	#if (turno>2 and ButtonDificuldade):
+	#	ButtonVisibility()
 	if (changeColor):
 		changeColor = false
 		changeColorButton()
@@ -551,7 +551,7 @@ func _on_Button_hard_pressed() -> void:
 
 
 func _on_Teste_pressed() -> void:
-	wAPlayer(770,490,240,550,90,"RedSaber")
+	print("teste")
 
 func _on_AnimationSaberToStartPosition_timeout() -> void:
 		get_parent().get_node("RedSaber").stop()
@@ -603,3 +603,7 @@ func _on_PlayerVsMachine_pressed() -> void:
 
 func _on_Restart_pressed() -> void:
 	start()
+
+
+func _on_Sair_pressed() -> void:
+	get_tree().quit()
