@@ -1,15 +1,9 @@
-[gd_scene load_steps=82 format=2]
+[gd_scene load_steps=76 format=2]
 
-[ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Game.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/EscolhaDePersonagem.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/fundo2.webm" type="VideoStream" id=4]
 [ext_resource path="res://Assets/intro.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Scripts/Fundo.gd" type="Script" id=7]
-[ext_resource path="res://Assets/RedSaber.webm" type="VideoStream" id=8]
-[ext_resource path="res://Assets/BlueSaber.webm" type="VideoStream" id=9]
-[ext_resource path="res://Objects/BlueSaber.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Objects/RedSaber.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Assets/redSaberAnimation/scene00010.png" type="Texture" id=12]
 [ext_resource path="res://Assets/redSaberAnimation/scene00013.png" type="Texture" id=13]
 [ext_resource path="res://Assets/redSaberAnimation/scene00001.png" type="Texture" id=14]
@@ -181,11 +175,8 @@ font_data = ExtResource( 58 )
 
 [node name="Main" type="Node2D"]
 z_index = -1
-script = ExtResource( 1 )
 
 [node name="Game" parent="." instance=ExtResource( 2 )]
-
-[node name="EscolhaDePersonagem" parent="." instance=ExtResource( 3 )]
 
 [node name="Fundo" type="Node2D" parent="."]
 z_index = -1
@@ -312,7 +303,7 @@ custom_styles/focus = SubResource( 15 )
 custom_styles/disabled = SubResource( 16 )
 custom_styles/normal = SubResource( 9 )
 
-[node name="Label2" type="Label" parent="."]
+[node name="#" type="Label" parent="."]
 margin_left = 851.0
 margin_top = 82.0
 margin_right = 1290.0
@@ -406,12 +397,6 @@ align = 1
 [node name="AnimationSaberToStartPosition" type="Timer" parent="."]
 wait_time = 0.23
 one_shot = true
-
-[node name="BlueSaber" parent="." instance=ExtResource( 10 )]
-stream = ExtResource( 9 )
-
-[node name="RedSaber" parent="." instance=ExtResource( 11 )]
-stream = ExtResource( 8 )
 
 [node name="SaberAnimation" type="AnimatedSprite" parent="."]
 visible = false

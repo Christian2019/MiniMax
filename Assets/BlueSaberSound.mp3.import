@@ -11,5 +11,5 @@ dest_files=[ "res://.import/BlueSaberSound.mp3-8f153cb8629e86fcde820b0f5bef7506.
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

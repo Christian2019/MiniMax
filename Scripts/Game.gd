@@ -1,18 +1,20 @@
 extends Node2D
 
+#Variáveis básicas de controle do jogo
 var dificuldade = "hard"
-var changeColor = true
-var turno = 1
-var ButtonDificuldade= false
 var playerVSPlayer=false
+var turno = 1
 
+#Função para limpar o tabuleiro
 func cleanMatriz():
 	return [[" "," "," "],
 			[" "," "," "],
 			[" "," "," "]]
-			
+
+#Variável tabuleiro
 var matriz = cleanMatriz()
 
+#Função que atualiza as imagens vistas no tabuleiro
 func changeImages():
 	for i in range(matriz.size()):
 		for j in range(matriz[i].size()):
@@ -37,16 +39,45 @@ func changeImages():
 				get_node(path).animation="Vazio"
 	printarMatriz(matriz)
 
+#Função para mostrar a situação atual do tabuleiro no output
+func printarMatriz(matriz):
+	for i in range(matriz.size()):
+		var line=""
+		for j in range(matriz[i].size()):
+			if (matriz[i][j]== " "):
+				line += " -"
+			else: 
+				line += " "+matriz[i][j] 
+		print(line)
+		
+#Início
 func _ready() -> void:
 	start()
-	
-func _process(delta: float) -> void:
-	#if (turno>2 and ButtonDificuldade):
-	#	ButtonVisibility()
-	if (changeColor):
-		changeColor = false
-		changeColorButton()
 
+#Função de início de partida
+func start():
+	print("Inicio da partida: ")
+	#Animação de vitória é desativada
+	get_parent().get_node("SaberAnimation").visible=false
+	changeColorButton()
+	turno = 1
+	$Turno.text= "Turno: "+str(turno)
+	matriz = cleanMatriz()
+	changeImages()
+	$XWinSound.stop()
+	$OWinSound.stop()
+	
+	#Decisão de quem começa a partida	
+	var i = intRandom(0,2)
+	if (i==0):
+		$Estado.text="Vez do Jogador 1"
+	else:
+		if (playerVSPlayer):
+			$Estado.text="Vez do Jogador 2"
+		else:
+			maquinaStart()
+
+# Função controladora das cores dos botoes
 func changeColorButton():
 		if (dificuldade== "easy"):
 			get_parent().get_node("Button_easy").get("custom_styles/normal").set("bg_color",Color("3b00ff00"))
@@ -61,18 +92,27 @@ func changeColorButton():
 			get_parent().get_node("Button_medium").get("custom_styles/normal").set("bg_color",Color("3b999999"))
 			get_parent().get_node("Button_hard").get("custom_styles/normal").set("bg_color",Color("3bff0000"))
 		
-func ButtonVisibility():
-	get_parent().get_node("Button_easy").visible=!ButtonDificuldade
-	get_parent().get_node("Button_medium").visible=!ButtonDificuldade
-	get_parent().get_node("Button_hard").visible=!ButtonDificuldade
-	ButtonDificuldade=!ButtonDificuldade
+#Delay de 1 segundo para a máquina jogar ativando o Timer Maquina
+func maquinaStart():
+	$Estado.text="Vez da Maquina"
+	$Maquina.start()
 	
-#Jogada da maquina	
+#Jogada da máquina	
 func _on_Maquina_timeout() -> void:
+	#Toca Som de blaster
 	$BlasterSound.play()
+	
+	#Objeto final {"x":i,"y":j} que determina onde será feita a jogada 
 	var p
+	
+	#Jogada da máquina de acordo com o nível de dificuldade
+	#Caso seja o primeiro turno ou a dificuldade seja fácil
+	# a maquina joga de forma aleatória
 	if (dificuldade=="easy"||turno==1):
 		p =random()
+		
+	#Caso seja dificuldade média tem 70% de chance de usar miniMax
+	# e 30% aleatória
 	elif (dificuldade=="medium"):
 		var n = intRandom(0,10)+1
 		if (n>3):
@@ -81,13 +121,22 @@ func _on_Maquina_timeout() -> void:
 		else:
 			print("Jogou Random no medio")
 			p =random()
+			
+	#No difícil sempre será jogado com miniMax
 	elif (dificuldade=="hard"):
 		p =miniMax()
+	
+	#Jogada é realizada no tabuleiro	
 	matriz[p.x][p.y]="x"
+	
 	turno+=1
 	$Turno.text= "Turno: "+str(turno)
 	print("Maquina joga em: ",p.x,"x",p.y)
 	changeImages()
+	
+	#Caso o jogo termine com a jogada, será executado a animação da vitória e o som
+	#correspondente	ao nível de dificuldade. Cada som possui tempos de duração
+	#diferente e por isso o wait time de final de jogo é alterado de acordo.
 	if (isGameFinish(matriz,false)):
 		if ($Estado.text!="Empate"):
 			if (dificuldade=="hard"):
@@ -103,55 +152,122 @@ func _on_Maquina_timeout() -> void:
 			$FimDeJogo.wait_time=1.5
 		$FimDeJogo.start()
 	else:
+		#Caso o jogo não terminou o estado é trocado para vez do jogador
+		#possibilitando o clique dele no tabuleiro
 		$Estado.text="Vez do Jogador 1"
-		
+
+#Sorteia uma posição livre do tabuleiro
+func random():
+	var x = intRandom(0,3)
+	var y = intRandom(0,3)
+	while (matriz[x][y]!=" "):
+		x = intRandom(0,3)
+		y = intRandom(0,3)
+	return {"x":x,"y":y}
+
+#Sorteia um número inteiro >= ao minV e < maxV	
+func intRandom(minV,maxV):
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	return int (rng.randf_range(minV, maxV))
+	
+#Parte não recursiva do MiniMax
 func miniMax():
+	#Arrays que gravam todas as jogadas que garantem vitórias, empates e derrotas
 	var vitorias = []
 	var empates = []
 	var derrotas = []
+	
+	#O tabuleiro é percorrido e todos os espaços vazios são analisados 
+	#como possiveis jogadas
 	for i in range(matriz.size()):
 		for j in range(matriz[i].size()):
 			if (matriz[i][j]==" "):
+				
+				#É feito uma copia do tabuleiro para teste
 				var nm = matriz.duplicate(true)
+				
+				#É feito uma jogada teste na posição vazia correspondente
+				#para verificar a situação do tabuleiro após esta jogada
 				nm[i][j]="x"
 				var result = isGameFinish(nm,true)
+				
+				#Caso o resultado seja 1, significa que a jogada provocará uma vitoria
+				#e é imediatamente retornada como a melhor jogada
 				if (String(result) == "1"):
 					return {"x":i,"y":j}
+				
+				#Caso o resultado seja 0, significa que a jogada provocará um empate
+				#e é imediatamente retornada, pois é a unica jogada possivel
 				elif (String(result) == "0"):
 					return {"x":i,"y":j}
+					
+				#Caso o resultado seja continua, significa que a partida não esta
+				#finalizada e será necessário decidir se esta jogada consegue
+				#garantir uma vitoria, empate ou derrota atraves do MiniMax recursivo 	
 				elif (result == "continua"):
 					var v =miniMaxR(nm,false)
+					
+					#O resultado é armazenado no array correspondente de
+					#vitorias,derrotas e empates
 					if (v==1):
 						vitorias.append({"x":i,"y":j})
 					elif (v==0):
 						empates.append({"x":i,"y":j})
 					elif (v==-1):
 						derrotas.append({"x":i,"y":j})
+	
+	#Se vitorias possui elementos, então sera sorteado um deles para ser retornado
+	#Isto gera mais diversidade nas partidas já que mais de uma jogada pode
+	#garantir uma vitória.					
 	if (vitorias.size()>0):
 		var n = intRandom(0,vitorias.size())
 		return vitorias[n]
+	#Se vitorias não possui elementos, então será sorteado uma garantia de empate.
 	elif (empates.size()>0):
 		var n = intRandom(0,empates.size())
 		return empates[n]
+	#Em último caso, caso ocorra uma troca de dificuldade no meio da partida
+	#e uma jogada aleatória provoque a impossibilidade de garantia de 
+	#vitoria ou empate, uma derrota aleatória será retornada
 	else:
 		var n = intRandom(0,derrotas.size())
 		return derrotas[n]
 
+#Parte Recusiva do MiniMax
+#Esta função recebe um estado do tabuleiro e quem esta fazendo a jogada
+#No caso de Max ser true seria uma jogada da máquina e no caso se for false,
+#seria uma jogada do jogador
 func miniMaxR(m,Max):
+	
+	#A var melhorJogadaValue tem como objetivo apenas encontrar garantias de empates. 
+	#Caso a função isGameFinish encontre  um 1 em max ou -1 em min a função miniMaxR
+	#retorna imeditamente.
 	var melhorJogadaValue
 	if (Max):
 		melhorJogadaValue=-1
 	else:
 		melhorJogadaValue=1
+		
+	# Normalmente isso cobriria todos os casos,	mas existe a situacao onde o jogador
+	# altera o nível de dificuldade no meio da partida. Neste caso uma jogada
+	# aleatória pode provocar a não garantia de empate. Neste caso a função ira
+	# retornar o valor inicial da melhorJOgadaValue -1 em max e 1 em min.
+	
 	for i in range(m.size()):
 		for j in range(m[i].size()):
 			if (m[i][j]==" "):
 				var nm = m.duplicate(true)
+				#Jogada simulada é feita com "x" para a máquina e "o" para o jogador
 				if (Max):
 					nm[i][j]="x"
 				else:
 					nm[i][j]="o"
+					
 				var result = isGameFinish(nm,true)
+				
+				#Se o resultado for continua, chama miniMaxR enviando a nova
+				#situação do tabuleiro e o contrário de Max
 				if (String(result)=="continua"):
 						result = miniMaxR(nm,!Max)
 				if(Max):
@@ -166,66 +282,13 @@ func miniMaxR(m,Max):
 							melhorJogadaValue= result
 	return melhorJogadaValue
 
-func random():
-	var x = intRandom(0,3)
-	var y = intRandom(0,3)
-	while (matriz[x][y]!=" "):
-		x = intRandom(0,3)
-		y = intRandom(0,3)
-	return {"x":x,"y":y}
-
-func _on_FimDeJogo_timeout() -> void:
-	start()
-
-func intRandom(minV,maxV):
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
-	return int (rng.randf_range(minV, maxV))
-
-"""
-Reseta animacao de video
-func resetSabers():
-	var video_file = "res://Assets/RedSaber.webm"
-	var sfx = load(video_file) 
-	get_parent().get_node("RedSaber").stream = sfx
-	var video_file2 = "res://Assets/BlueSaber.webm"
-	var sfx2 = load(video_file2) 
-	get_parent().get_node("BlueSaber").stream = sfx2
-	get_parent().get_node("RedSaber").visible=false
-	get_parent().get_node("BlueSaber").visible=false
-"""
-
-
-func start():
-	print("Inicio da partida: ")
-	get_parent().get_node("SaberAnimation").visible=false
-	#$VaderBreathing.stop()
-	get_parent().get_node("Button_easy").visible=true
-	get_parent().get_node("Button_medium").visible=true
-	get_parent().get_node("Button_hard").visible=true
-	ButtonDificuldade=true
-	turno = 1
-	$Turno.text= "Turno: "+str(turno)
-	matriz = cleanMatriz()
-	changeImages()
-	var i = intRandom(0,2)
-	if (i==0):
-		$Estado.text="Vez do Jogador 1"
-	else:
-		if (playerVSPlayer):
-			$Estado.text="Vez do Jogador 2"
-		else:
-			maquinaStart()
-		
-func maquinaStart():
-	$Estado.text="Vez da Maquina"
-	#if(!$VaderBreathing.playing):
-	#	$VaderBreathing.play()
-	#	$VaderBreathing/Stop.start()
-	#$BlasterSound.play()
-	$Maquina.start()
-
+#Função que recebe um estado de tabuleiro e identifica se o estado é de vitória,
+#empate, derrota ou se o jogo continua
+#Se for o miniMax que esta utilizando esta função ela retorna e tem um comportamento
+#diferente da verifição de final do turno
 func isGameFinish(matriz,miniMax):
+	
+	#Vitórias
 	#Linhas
 	if (matriz[0][0]==matriz[0][1] and matriz[0][1]==matriz[0][2] and matriz[0][0]!=" "):
 		if(miniMax):
@@ -235,7 +298,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:	
 			print ("Vitoria: ",matriz[0][0])
-			#$Estado.text="Vitoria do " + matriz[0][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -253,7 +315,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[1][0])
-			#$Estado.text="Vitoria do " + matriz[1][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -271,7 +332,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[2][0])
-			#$Estado.text="Vitoria do " + matriz[2][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -281,6 +341,7 @@ func isGameFinish(matriz,miniMax):
 			print("Vitoria de linha 3")
 			winAnimation(matriz[2][0],"l3")
 			return true
+	
 	#Colunas
 	elif (matriz[0][0]==matriz[1][0] and matriz[1][0]==matriz[2][0] and matriz[0][0]!=" "):
 		if(miniMax):
@@ -290,7 +351,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][0])
-			#$Estado.text="Vitoria do " + matriz[0][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -308,7 +368,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][1])
-			#$Estado.text="Vitoria do " + matriz[0][1]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -326,7 +385,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][2])
-			#$Estado.text="Vitoria do " + matriz[0][2]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -336,6 +394,7 @@ func isGameFinish(matriz,miniMax):
 			print("Vitoria de coluna 3")
 			winAnimation(matriz[0][2],"c3")
 			return true		
+	
 	#Diagonais
 	elif (matriz[0][0]==matriz[1][1] and matriz[1][1]==matriz[2][2] and matriz[0][0]!=" "):
 		if(miniMax):
@@ -345,7 +404,6 @@ func isGameFinish(matriz,miniMax):
 				return -1
 		else:
 			print ("Vitoria: ",matriz[0][0])
-			#$Estado.text="Vitoria do " + matriz[0][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -363,7 +421,6 @@ func isGameFinish(matriz,miniMax):
 				return -1	
 		else:
 			print ("Vitoria: ",matriz[2][0])
-			#$Estado.text="Vitoria do " + matriz[2][0]
 			if ($Estado.text=="Vez do Jogador 1"):
 				$Estado.text="Vitória do Jogador 1"
 			elif ($Estado.text=="Vez do Jogador 2"):
@@ -373,6 +430,7 @@ func isGameFinish(matriz,miniMax):
 			print("Vitoria de diagonal 2")
 			winAnimation(matriz[2][0],"d2")
 			return true		
+	
 	#Empate
 	var empate = true
 	for i in range(matriz.size()):
@@ -386,23 +444,20 @@ func isGameFinish(matriz,miniMax):
 			print("empate")
 			$Estado.text="Empate"
 			return true
+	
 	#Jogo continua
 	if(miniMax):
 		return "continua"
 	else:
 		return false
 
-func printarMatriz(matriz):
-	for i in range(matriz.size()):
-		var line=""
-		for j in range(matriz[i].size()):
-			if (matriz[i][j]== " "):
-				line += " -"
-			else: 
-				line += " "+matriz[i][j] 
-		print(line)
-
+#Após o timer ser finalizdo o jogo reinicia
+func _on_FimDeJogo_timeout() -> void:
+	start()
+	
+#Jogada do Player
 func isFree(x,y):
+	#Se não for a vez do jogador nada acontece
 	if ($Estado.text!="Vez do Jogador 1" and $Estado.text!="Vez do Jogador 2"):
 		return
 	if (matriz[x][y]==" "):
@@ -444,6 +499,8 @@ func isFree(x,y):
 	else:
 		print("Jogada nao permitida")
 
+#Ativa a animação do sabre de luz cortando de acordo com o vencedor e na posição
+#correta
 func winAnimation(vencedor,tipo):
 	var typeSaber
 	if (vencedor=="x"):
@@ -475,6 +532,7 @@ func winAnimation(vencedor,tipo):
 	elif(tipo=="d2"):
 	  wAPlayer(709,586,0.234,1.416,53.1,typeSaber)
 	
+#Altera tamanho posição, rotação e animação de vitória
 func wAPlayer(x,y,scaleX,scaleY,Rotation,typeSaber):
 	get_parent().get_node("SaberAnimation").position.x = x
 	get_parent().get_node("SaberAnimation").position.y = y
@@ -482,19 +540,15 @@ func wAPlayer(x,y,scaleX,scaleY,Rotation,typeSaber):
 	get_parent().get_node("SaberAnimation").scale.y=scaleY
 	get_parent().get_node("SaberAnimation").rotation_degrees=Rotation
 	get_parent().get_node("SaberAnimation").animation=typeSaber
-	
-	get_parent().get_node("SaberAnimation").frame=1
+	get_parent().get_node("SaberAnimation").frame=0
 	if (typeSaber=="RedSaber"):
 		$XWinSound.play()
-		get_node("XWinSound/Stop").start()
 	else:
 		$OWinSound.play()
-		get_node("OWinSound/Stop").start()
-	
 	get_parent().get_node("SaberAnimation").play()
 	get_parent().get_node("SaberAnimation").visible=true
 	
-
+#Botões
 func _on_Button0x0_pressed() -> void:
 	#print("Button 0x0 pressed!")
 		isFree(0,0)		
@@ -533,32 +587,45 @@ func _on_Button2x2_pressed() -> void:
 
 func _on_Button_easy_pressed() -> void:
 	dificuldade="easy"
-	changeColor=true
+	changeColorButton()
 	print(dificuldade)
 	changeImages()
 
 func _on_Button_medium_pressed() -> void:
 	dificuldade= "medium"
-	changeColor=true
+	changeColorButton()
 	print(dificuldade)
 	changeImages()
 
 func _on_Button_hard_pressed() -> void:
 	dificuldade= "hard"
-	changeColor=true
+	changeColorButton()
 	print(dificuldade)
 	changeImages()
 
+func _on_PlayerVsPlayer_pressed() -> void:
+	 playerVSPlayer =true
+	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
+	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
 
+
+func _on_PlayerVsMachine_pressed() -> void:
+	 playerVSPlayer =false
+	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
+	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
+	
+
+func _on_Restart_pressed() -> void:
+	start()
+
+
+func _on_Sair_pressed() -> void:
+	get_tree().quit()
+	
+
+#Botao e timer para testes	
 func _on_Teste_pressed() -> void:
 	print("teste")
-
-func _on_AnimationSaberToStartPosition_timeout() -> void:
-		get_parent().get_node("RedSaber").stop()
-		get_parent().get_node("BlueSaber").stop()
-		get_parent().get_node("RedSaber").volume_db=0
-		get_parent().get_node("BlueSaber").volume_db=0
-
 
 func _on_TesteTimer_timeout() -> void:
 	return
@@ -588,22 +655,7 @@ func _on_TesteTimer_timeout() -> void:
 	#Diagonal 2
 	elif(tipo=="d2"):
 	  wAPlayer(709,586,0.234,1.416,53.1,typeSaber)
-
-func _on_PlayerVsPlayer_pressed() -> void:
-	 playerVSPlayer =true
-	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
-	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
-
-
-func _on_PlayerVsMachine_pressed() -> void:
-	 playerVSPlayer =false
-	 get_parent().get_node("PlayerVsPlayer").get("custom_styles/normal").set("bg_color",Color("3b6c6c6c"))
-	 get_parent().get_node("PlayerVsMachine").get("custom_styles/normal").set("bg_color",Color("4bffe919"))
 	
-
-func _on_Restart_pressed() -> void:
-	start()
-
-
-func _on_Sair_pressed() -> void:
-	get_tree().quit()
+	
+	
+	
