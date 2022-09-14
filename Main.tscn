@@ -394,10 +394,6 @@ text = "Difícil
 Sith Master"
 align = 1
 
-[node name="AnimationSaberToStartPosition" type="Timer" parent="."]
-wait_time = 0.23
-one_shot = true
-
 [node name="SaberAnimation" type="AnimatedSprite" parent="."]
 visible = false
 position = Vector2( 739, 496 )
@@ -506,7 +502,6 @@ text = "Sair do Jogo"
 [connection signal="pressed" from="Button_easy" to="Game" method="_on_Button_easy_pressed"]
 [connection signal="pressed" from="Button_medium" to="Game" method="_on_Button_medium_pressed"]
 [connection signal="pressed" from="Button_hard" to="Game" method="_on_Button_hard_pressed"]
-[connection signal="timeout" from="AnimationSaberToStartPosition" to="Game" method="_on_AnimationSaberToStartPosition_timeout"]
 [connection signal="timeout" from="TesteTimer" to="Game" method="_on_TesteTimer_timeout"]
 [connection signal="pressed" from="PlayerVsPlayer" to="Game" method="_on_PlayerVsPlayer_pressed"]
 [connection signal="pressed" from="PlayerVsMachine" to="Game" method="_on_PlayerVsMachine_pressed"]
